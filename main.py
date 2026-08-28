@@ -102,4 +102,10 @@ for i in range(30):
     plt.title("iter=%d" % (i * 10))
     plt.axis('off')
 
+output_prefix = "index_%d" % img_index
+tt(gt_data[0].cpu()).save("%s_actual.png" % output_prefix)
+tt(dummy_data[0].detach().cpu().clamp(0, 1)).save(
+    "%s_reconstructed.png" % output_prefix
+)
+
 plt.show()
