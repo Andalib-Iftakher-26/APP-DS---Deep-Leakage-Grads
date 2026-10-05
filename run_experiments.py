@@ -4,8 +4,8 @@ metrics + figures for the reproduction study.
 
 Examples
 --------
-# Replicate your preliminary run exactly (CIFAR-100, indices 30 40 60)
-python run_experiments.py --dataset cifar100 --indices 30 40 60 --seeds 0
+# Replicate main.py exactly (seed -1 = official random stream), incl. default index 25
+python run_experiments.py --dataset cifar100 --indices 25 30 40 60 --seeds -1 --tag official
 
 # Main replication: 20 class-balanced CIFAR-100 images x 3 seeds
 python run_experiments.py --dataset cifar100 --n-images 20 --seeds 0 1 2
@@ -117,7 +117,7 @@ def main():
                    choices=["cifar100", "cifar10", "mnist", "fmnist", "svhn", "smartphone"])
     p.add_argument("--n-images", type=int, default=20, help="class-balanced sample size")
     p.add_argument("--indices", type=int, nargs="*", help="explicit dataset indices (overrides --n-images)")
-    p.add_argument("--seeds", type=int, nargs="+", default=[0, 1, 2], help="dummy-initialisation seeds")
+    p.add_argument("--seeds", type=int, nargs="+", default=[0, 1, 2], help="dummy-initialisation seeds; -1 = official main.py behaviour")
     p.add_argument("--iters", type=int, default=300, help="300 = official code default; paper used 1200")
     p.add_argument("--model-seed", type=int, default=1234, help="1234 = official code")
     p.add_argument("--image-size", type=int, default=None, help="resize inputs, e.g. 64 for resolution tests")
@@ -158,7 +158,8 @@ def main():
         for n, idx in enumerate(indices, 1):
             gt, label = get_image_tensor(dst, idx, info)
             for seed in args.seeds:
-                res = run_dlg(net, gt, label, info["classes"], args.iters, seed, device=device)
+                res = run_dlg(net, gt, label, info["classes"], args.iters, seed, device=device,
+                              model_seed=args.model_seed)
                 recon = res["recon"]
                 finite = torch.isfinite(recon).all().item()
                 m = mse(gt, recon) if finite else float("nan")

@@ -210,11 +210,15 @@ def build_model(info, model_seed=1234, device="cpu"):
 
 
 def run_dlg(net, gt_data, gt_label, num_classes, iters=300, dummy_seed=0,
-            snapshot_every=10, device="cpu"):
+            snapshot_every=10, device="cpu", model_seed=1234):
     """
     Run one DLG attack on a single image.
 
     gt_data: tensor (C, H, W) in [0, 1];  gt_label: int.
+    dummy_seed: seed for the attacker's random starting noise. Use -1 for
+      "official" mode: like main.py, the noise is drawn from the same random
+      stream straight after torch.manual_seed(1234) + weights_init, so the
+      result matches main.py exactly.
     Returns a dict with the reconstruction, recovered label, loss history and
     snapshots (for animations), plus runtime.
     """
@@ -230,7 +234,14 @@ def run_dlg(net, gt_data, gt_label, num_classes, iters=300, dummy_seed=0,
     original_dy_dx = [g.detach().clone() for g in dy_dx]
 
     # 2. The attacker starts from random noise (seeded so trials are repeatable).
-    torch.manual_seed(dummy_seed)
+    if dummy_seed is None or dummy_seed < 0:
+        # Official main.py order: seed 1234 -> weights_init -> randn (no reseed).
+        # Re-applying weights_init sets identical weights and advances the RNG
+        # exactly as main.py does.
+        torch.manual_seed(model_seed)
+        net.apply(weights_init)
+    else:
+        torch.manual_seed(dummy_seed)
     dummy_data = torch.randn(gt_data.size(), device=device).requires_grad_(True)
     dummy_label = torch.randn(gt_onehot.size(), device=device).requires_grad_(True)
     optimizer = torch.optim.LBFGS([dummy_data, dummy_label])  # lr=1, history=100, max_iter=20 (defaults)
