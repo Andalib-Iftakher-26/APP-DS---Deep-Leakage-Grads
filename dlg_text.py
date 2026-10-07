@@ -70,7 +70,10 @@ def load_sentences(args):
             return [l.strip() for l in f if l.strip()]
     if args.wikitext:
         from datasets import load_dataset
-        ds = load_dataset("wikitext", "wikitext-2-raw-v1", split="test")
+        try:  # the dataset moved to the Salesforce namespace on the Hugging Face Hub
+            ds = load_dataset("Salesforce/wikitext", "wikitext-2-raw-v1", split="test")
+        except Exception:
+            ds = load_dataset("wikitext", "wikitext-2-raw-v1", split="test")
         pool = []
         for para in ds["text"]:
             para = para.strip()
@@ -152,7 +155,11 @@ def attack_sentence(sentence, tok, model, args, seed, device, log):
     torch.manual_seed(seed)
     dummy_emb = (torch.randn(1, L, H, device=device) * emb.weight.std()).requires_grad_(True)
     dummy_label = torch.randn(len(label_pos), V, device=device).requires_grad_(True)
-    opt = torch.optim.LBFGS([dummy_emb, dummy_label], lr=args.lr)
+    # Paper/official: L-BFGS, lr 1, no line search. That overshoots here (the loss falls, then
+    # jumps up and freezes), so a strong-Wolfe line search is used by default (--line-search none
+    # restores the paper's setting).
+    ls = None if args.line_search == "none" else args.line_search
+    opt = torch.optim.LBFGS([dummy_emb, dummy_label], lr=args.lr, line_search_fn=ls)
 
     def closure():
         opt.zero_grad()
@@ -175,8 +182,12 @@ def attack_sentence(sentence, tok, model, args, seed, device, log):
         return emb_tok, lab_tok, combined
 
     start, history, diverged = time.time(), [], False
+    best_loss, best_emb, best_lab = float("inf"), None, None
     for it in range(args.iters):
-        opt.step(closure)
+        prev_emb, prev_lab = dummy_emb.detach().clone(), dummy_label.detach().clone()
+        loss_before = float(opt.step(closure))  # loss at prev_emb/prev_lab
+        if math.isfinite(loss_before) and loss_before < best_loss:
+            best_loss, best_emb, best_lab = loss_before, prev_emb, prev_lab
         if it % 10 == 0 or it == args.iters - 1:
             cur = closure().item()
             history.append((it, cur))
@@ -186,6 +197,14 @@ def attack_sentence(sentence, tok, model, args, seed, device, log):
                 diverged = True
                 break
     runtime = time.time() - start
+    final_loss = closure().item()
+    if math.isfinite(final_loss) and final_loss < best_loss:
+        best_loss, best_emb, best_lab = final_loss, dummy_emb.detach().clone(), dummy_label.detach().clone()
+    if not args.last_iterate and best_emb is not None:
+        with torch.no_grad():  # report the lowest-loss point, not wherever the optimiser ended up
+            dummy_emb.copy_(best_emb)
+            dummy_label.copy_(best_lab)
+    log.write(f"  -> reported: {'last iterate' if args.last_iterate else f'best (loss {best_loss:.4g})'}\n")
 
     emb_tok, lab_tok, combined = recover()
     c = torch.tensor(content, device=device)
@@ -200,7 +219,8 @@ def attack_sentence(sentence, tok, model, args, seed, device, log):
         recovered_token_acc=sum(a == b for a, b in zip(rec_toks, orig_toks)) / len(orig_toks),
         norm_edit_distance=edit_distance(rec_toks, orig_toks) / len(orig_toks),
         exact_match=int(rec_toks == orig_toks),
-        final_grad_loss=history[-1][1], runtime_s=runtime, diverged=int(diverged),
+        final_grad_loss=best_loss if not args.last_iterate else final_loss, runtime_s=runtime,
+        diverged=int(diverged),
     )
 
 
@@ -215,6 +235,10 @@ def main():
     p.add_argument("--max-len", type=int, default=32)
     p.add_argument("--iters", type=int, default=100, help="paper: 100")
     p.add_argument("--lr", type=float, default=1.0)
+    p.add_argument("--line-search", default="strong_wolfe", choices=["strong_wolfe", "none"],
+                   help="none = paper/official L-BFGS (overshoots on BERT)")
+    p.add_argument("--last-iterate", action="store_true",
+                   help="report the final iterate instead of the lowest-loss one")
     p.add_argument("--seeds", type=int, nargs="+", default=[0, 1, 2])
     p.add_argument("--model-seed", type=int, default=1234)
     p.add_argument("--data-seed", type=int, default=0)
@@ -229,7 +253,7 @@ def main():
     tok, model = build_model(args, device)
     source = "wikitext" if args.wikitext else ("file" if args.sentences else "builtin")
     run = f"text_{source}_{args.size}" + ("_pretrained" if args.pretrained else "") + \
-          (f"_{args.tag}" if args.tag else "")
+          ("_ls" if args.line_search != "none" else "") + (f"_{args.tag}" if args.tag else "")
     out_dir = os.path.join(args.out, run)
     os.makedirs(out_dir, exist_ok=True)
     n_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
@@ -261,6 +285,7 @@ def main():
         return statistics.mean(r[k] for r in rows)
     summary = dict(type="text", run=run, model=f"bert-{args.size}", pretrained=args.pretrained,
                    label_mode=args.label_mode, iters=args.iters, seeds=args.seeds,
+                   line_search=args.line_search, reported="last" if args.last_iterate else "best",
                    n_sentences=len(sentences), n_trials=len(rows),
                    input_token_acc=mean("input_token_acc"), label_token_acc=mean("label_token_acc"),
                    recovered_token_acc=mean("recovered_token_acc"),

@@ -4,6 +4,7 @@
 #          bash run_all.sh         # the real runs; safe to stop and restart
 # Each block writes its own results/<run>/ folder, so a crash later on doesn't lose earlier results.
 set -e
+export PYTHONUNBUFFERED=1   # log file updates live
 N=20          # images per dataset (class-balanced)
 SEEDS="0 1 2" # attacker starting points
 
