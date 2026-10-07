@@ -36,7 +36,19 @@ def main():
         s["run"] = os.path.basename(os.path.dirname(path))
         summaries.append(s)
     text = [s for s in summaries if s.get("type") == "text"]
-    summaries = [s for s in summaries if s.get("type") != "text"]
+    batch = [s for s in summaries if s.get("type") == "batch"]
+    summaries = [s for s in summaries if s.get("type") not in ("text", "batch")]
+    if batch:
+        print("Batched DLG runs (paper Table 1):")
+        print("| run | batch size | converged | median iters to converge | MSE | SSIM | label acc |")
+        print("|---|---|---|---|---|---|---|")
+        for b in batch:
+            for bs, s in b["per_batch_size"].items():
+                print(f"| {b['run']} | {bs} | {s['converged']}/{s['trials']} | "
+                      f"{s['median_iters_to_converge'] if s['median_iters_to_converge'] is not None else '-'} | "
+                      f"{'-' if s['mse_mean'] is None else round(s['mse_mean'], 4)} | "
+                      f"{'-' if s['ssim_mean'] is None else round(s['ssim_mean'], 3)} | {s['label_acc']:.0%} |")
+        print()
     if text:
         print("Text (BERT) runs:")
         print("| run | sentences | trials | token acc | input acc | label acc | norm. edit dist | exact match |")

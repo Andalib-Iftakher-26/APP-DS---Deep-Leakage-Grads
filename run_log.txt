@@ -167,3 +167,116 @@ Dataset cifar100: 50000 images, 100 classes, 3x32x32 | model lenet | device cpu
 }
 
 Saved to results/cifar100/
+Dataset mnist: 60000 images, 10 classes, 1x28x28 | model lenet | device cpu
+20 images x 3 seeds = 60 trials, 300 iterations each
+
+[1/20] idx 41291 (0 - zero) seed 0: MSE 0.0000  SSIM 1.000  label OK  8.4s
+[1/20] idx 41291 (0 - zero) seed 1: MSE 0.4979  SSIM -0.009  label OK  1.6s
+[1/20] idx 41291 (0 - zero) seed 2: MSE 0.4730  SSIM 0.016  label OK  32.0s
+[2/20] idx 39437 (1 - one) seed 0: MSE 0.5001  SSIM 0.005  label X  1.5s
+[2/20] idx 39437 (1 - one) seed 1: MSE 0.4886  SSIM -0.004  label OK  1.8s
+[2/20] idx 39437 (1 - one) seed 2: MSE 0.4898  SSIM 0.005  label OK  1.6s
+[3/20] idx 16810 (2 - two) seed 0: MSE 0.4764  SSIM -0.009  label OK  1.6s
+[3/20] idx 16810 (2 - two) seed 1: MSE 0.0000  SSIM 1.000  label OK  5.2s
+[3/20] idx 16810 (2 - two) seed 2: MSE 0.5079  SSIM -0.010  label X  23.6s
+[4/20] idx 10678 (3 - three) seed 0: MSE 0.0000  SSIM 1.000  label OK  5.1s
+[4/20] idx 10678 (3 - three) seed 1: MSE 0.0000  SSIM 1.000  label OK  4.1s
+[4/20] idx 10678 (3 - three) seed 2: MSE 0.0000  SSIM 1.000  label OK  4.4s
+[5/20] idx 55074 (4 - four) seed 0: MSE 0.4939  SSIM -0.029  label OK  1.3s
+[5/20] idx 55074 (4 - four) seed 1: MSE 0.0000  SSIM 1.000  label OK  5.0s
+[5/20] idx 55074 (4 - four) seed 2: MSE 0.5022  SSIM 0.029  label OK  33.0s
+[6/20] idx 57327 (5 - five) seed 0: MSE 0.4934  SSIM -0.003  label X  2.0s
+[6/20] idx 57327 (5 - five) seed 1: MSE 0.0000  SSIM 1.000  label OK  4.2s
+[6/20] idx 57327 (5 - five) seed 2: MSE 0.0000  SSIM 1.000  label OK  5.3s
+[7/20] idx 43095 (6 - six) seed 0: MSE 0.4533  SSIM 0.005  label X  2.1s
+[7/20] idx 43095 (6 - six) seed 1: MSE 0.0000  SSIM 1.000  label OK  4.4s
+[7/20] idx 43095 (6 - six) seed 2: MSE 0.0000  SSIM 1.000  label OK  4.8s
+[8/20] idx 21567 (7 - seven) seed 0: MSE 0.5015  SSIM 0.005  label X  1.7s
+[8/20] idx 21567 (7 - seven) seed 1: MSE 0.5039  SSIM 0.011  label X  4.4s
+[8/20] idx 21567 (7 - seven) seed 2: MSE 0.0000  SSIM 1.000  label OK  7.6s
+[9/20] idx 26145 (8 - eight) seed 0: MSE 0.0000  SSIM 1.000  label OK  4.5s
+[9/20] idx 26145 (8 - eight) seed 1: MSE 0.0000  SSIM 1.000  label OK  4.0s
+[9/20] idx 26145 (8 - eight) seed 2: MSE 0.0000  SSIM 1.000  label OK  4.1s
+[10/20] idx 36044 (9 - nine) seed 0: MSE 0.4571  SSIM 0.001  label X  1.8s
+[10/20] idx 36044 (9 - nine) seed 1: MSE 0.4921  SSIM -0.002  label OK  2.8s
+[10/20] idx 36044 (9 - nine) seed 2: MSE 0.4874  SSIM -0.006  label X  2.4s
+[11/20] idx 21066 (0 - zero) seed 0: MSE 0.0000  SSIM 1.000  label OK  4.4s
+[11/20] idx 21066 (0 - zero) seed 1: MSE 0.0000  SSIM 1.000  label OK  3.7s
+[11/20] idx 21066 (0 - zero) seed 2: MSE 0.4684  SSIM 0.023  label OK  1.4s
+[12/20] idx 47621 (1 - one) seed 0: MSE 0.4630  SSIM 0.037  label X  1.5s
+[12/20] idx 47621 (1 - one) seed 1: MSE 0.0000  SSIM 1.000  label OK  5.3s
+[12/20] idx 47621 (1 - one) seed 2: MSE 0.4706  SSIM 0.024  label X  1.7s
+[13/20] idx 30705 (2 - two) seed 0: MSE 0.4633  SSIM -0.006  label X  2.2s
+[13/20] idx 30705 (2 - two) seed 1: MSE 0.0000  SSIM 1.000  label OK  5.1s
+[13/20] idx 30705 (2 - two) seed 2: MSE 0.4749  SSIM 0.010  label X  12.1s
+[14/20] idx 46986 (3 - three) seed 0: MSE 0.0000  SSIM 1.000  label OK  4.7s
+[14/20] idx 46986 (3 - three) seed 1: MSE 0.0000  SSIM 1.000  label OK  4.1s
+[14/20] idx 46986 (3 - three) seed 2: MSE 0.0000  SSIM 1.000  label OK  5.1s
+[15/20] idx 15479 (4 - four) seed 0: MSE 0.0000  SSIM 1.000  label OK  4.1s
+[15/20] idx 15479 (4 - four) seed 1: MSE 0.5029  SSIM -0.003  label X  1.6s
+[15/20] idx 15479 (4 - four) seed 2: MSE 0.4538  SSIM 0.020  label X  1.4s
+[16/20] idx 29120 (5 - five) seed 0: MSE 0.4154  SSIM -0.014  label X  2.4s
+[16/20] idx 29120 (5 - five) seed 1: MSE 0.0000  SSIM 1.000  label OK  4.4s
+[16/20] idx 29120 (5 - five) seed 2: MSE 0.4571  SSIM 0.020  label X  1.5s
+[17/20] idx  4072 (6 - six) seed 0: MSE 0.4822  SSIM 0.008  label X  1.6s
+[17/20] idx  4072 (6 - six) seed 1: MSE 0.4893  SSIM -0.039  label OK  1.8s
+[17/20] idx  4072 (6 - six) seed 2: MSE 0.4659  SSIM -0.005  label X  2.9s
+[18/20] idx 36531 (7 - seven) seed 0: MSE 0.0000  SSIM 1.000  label OK  5.7s
+[18/20] idx 36531 (7 - seven) seed 1: MSE 0.4578  SSIM -0.001  label X  1.6s
+[18/20] idx 36531 (7 - seven) seed 2: MSE 0.0000  SSIM 1.000  label OK  5.9s
+[19/20] idx  7479 (8 - eight) seed 0: MSE 0.0000  SSIM 1.000  label OK  4.7s
+[19/20] idx  7479 (8 - eight) seed 1: MSE 0.0000  SSIM 1.000  label OK  5.2s
+[19/20] idx  7479 (8 - eight) seed 2: MSE 0.5134  SSIM -0.024  label X  1.7s
+[20/20] idx  9481 (9 - nine) seed 0: MSE 0.4742  SSIM -0.012  label X  1.4s
+[20/20] idx  9481 (9 - nine) seed 1: MSE 0.5093  SSIM 0.003  label OK  2.0s
+[20/20] idx  9481 (9 - nine) seed 2: MSE 0.4669  SSIM 0.024  label OK  31.5s
+
+=== Summary ===
+{
+  "n_trials": 60,
+  "n_images": 20,
+  "n_diverged": 0,
+  "mse": {
+    "mean": 0.26411694273475395,
+    "std": 0.24143786709519582,
+    "median": 0.455448254942894
+  },
+  "psnr": {
+    "mean": 36.23035047685177,
+    "std": 36.90735943360802,
+    "median": 3.415638537796719
+  },
+  "ssim": {
+    "mean": 0.4511601130934044,
+    "std": 0.5007486188672942,
+    "median": 0.023891343735158443
+  },
+  "runtime_s": {
+    "mean": 5.32090284427007,
+    "std": 7.025893963113804,
+    "median": 4.103176593780518
+  },
+  "label_accuracy": 0.65,
+  "success_threshold_mse": 0.01,
+  "success_rate_per_trial": 0.45,
+  "success_rate_best_of_seeds": 0.8,
+  "median_iters_to_converge": 10,
+  "n_converged": 27,
+  "dataset": "mnist",
+  "model": "lenet",
+  "init": "official",
+  "iters": 300,
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "image_shape": [
+    1,
+    28,
+    28
+  ],
+  "device": "cpu"
+}
+
+Saved to results/mnist/
