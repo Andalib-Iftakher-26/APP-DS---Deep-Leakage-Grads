@@ -4,8 +4,8 @@ metrics + figures for the reproduction study.
 
 Examples
 --------
-# Replicate your preliminary run exactly (CIFAR-100, indices 30 40 60)
-python run_experiments.py --dataset cifar100 --indices 30 40 60 --seeds 0
+# Replicate main.py exactly (seed -1 = official random stream), incl. default index 25
+python run_experiments.py --dataset cifar100 --indices 25 30 40 60 --seeds -1 --tag official
 
 # Main replication: 20 class-balanced CIFAR-100 images x 3 seeds
 python run_experiments.py --dataset cifar100 --n-images 20 --seeds 0 1 2
@@ -41,7 +41,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-from dlg_lib import (load_dataset, stratified_indices, get_image_tensor, class_names,
+from dlg_lib import (ARCHS, load_dataset, stratified_indices, get_image_tensor, class_names,
                      build_model, run_dlg, iters_to_converge, mse, psnr, ssim)
 
 to_pil = transforms.ToPILImage()
@@ -114,10 +114,16 @@ def summarise(rows, success_mse):
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--dataset", required=True,
-                   choices=["cifar100", "cifar10", "mnist", "fmnist", "svhn", "smartphone"])
+                   choices=["cifar100", "cifar10", "mnist", "fmnist", "svhn", "lfw", "smartphone"])
+    p.add_argument("--model", default="lenet", choices=ARCHS,
+                   help="lenet = official demo; resnet56 = paper's model (slow on CPU)")
+    p.add_argument("--init", default="official", choices=["official", "default"],
+                   help="official = uniform(-0.5,0.5) as in the repo; default = PyTorch init")
+    p.add_argument("--resnet-strides", action="store_true",
+                   help="keep ResNet strides (the paper removed them)")
     p.add_argument("--n-images", type=int, default=20, help="class-balanced sample size")
     p.add_argument("--indices", type=int, nargs="*", help="explicit dataset indices (overrides --n-images)")
-    p.add_argument("--seeds", type=int, nargs="+", default=[0, 1, 2], help="dummy-initialisation seeds")
+    p.add_argument("--seeds", type=int, nargs="+", default=[0, 1, 2], help="dummy-initialisation seeds; -1 = official main.py behaviour")
     p.add_argument("--iters", type=int, default=300, help="300 = official code default; paper used 1200")
     p.add_argument("--model-seed", type=int, default=1234, help="1234 = official code")
     p.add_argument("--image-size", type=int, default=None, help="resize inputs, e.g. 64 for resolution tests")
@@ -136,17 +142,22 @@ def main():
     names = class_names(dst)
     indices = args.indices if args.indices else stratified_indices(dst, args.n_images)
 
-    out_dir = os.path.join(args.out, args.dataset + (f"_{args.tag}" if args.tag else ""))
+    run_name = args.dataset
+    if args.model != "lenet":
+        run_name += f"_{args.model}"
+    if args.tag:
+        run_name += f"_{args.tag}"
+    out_dir = os.path.join(args.out, run_name)
     os.makedirs(os.path.join(out_dir, "trials"), exist_ok=True)
     os.makedirs(os.path.join(out_dir, "progress"), exist_ok=True)
 
     print(f"Dataset {args.dataset}: {len(dst)} images, {info['classes']} classes, "
-          f"{info['channels']}x{info['size']}x{info['size']} | device {device}")
+          f"{info['channels']}x{info['size']}x{info['size']} | model {args.model} | device {device}")
     print(f"{len(indices)} images x {len(args.seeds)} seeds = {len(indices) * len(args.seeds)} trials, "
           f"{args.iters} iterations each\n")
 
-    net = build_model(info, args.model_seed, device)
-    fields = ["dataset", "index", "true_label", "class_name", "seed", "pred_label", "label_correct",
+    net = build_model(info, args.model_seed, device, args.model, args.init, args.resnet_strides)
+    fields = ["dataset", "model", "index", "true_label", "class_name", "seed", "pred_label", "label_correct",
               "mse", "psnr", "ssim", "final_grad_loss", "iters_to_converge", "runtime_s",
               "diverged", "success"]
     csv_path = os.path.join(out_dir, "results.csv")
@@ -158,12 +169,13 @@ def main():
         for n, idx in enumerate(indices, 1):
             gt, label = get_image_tensor(dst, idx, info)
             for seed in args.seeds:
-                res = run_dlg(net, gt, label, info["classes"], args.iters, seed, device=device)
+                res = run_dlg(net, gt, label, info["classes"], args.iters, seed, device=device,
+                              model_seed=args.model_seed)
                 recon = res["recon"]
                 finite = torch.isfinite(recon).all().item()
                 m = mse(gt, recon) if finite else float("nan")
                 row = dict(
-                    dataset=args.dataset, index=idx, true_label=label,
+                    dataset=args.dataset, model=args.model, index=idx, true_label=label,
                     class_name=names[label] if names else str(label), seed=seed,
                     pred_label=res["pred_label"], label_correct=int(res["pred_label"] == label),
                     mse=m, psnr=psnr(gt, recon) if finite else float("nan"),
@@ -191,7 +203,7 @@ def main():
                       f"{res['runtime_s']:.1f}s")
 
     summary = summarise(rows, args.success_mse)
-    summary.update(dataset=args.dataset, iters=args.iters, seeds=args.seeds,
+    summary.update(dataset=args.dataset, model=args.model, init=args.init, iters=args.iters, seeds=args.seeds,
                    image_shape=[info["channels"], info["size"], info["size"]], device=device)
     with open(os.path.join(out_dir, "summary.json"), "w") as f:
         json.dump(summary, f, indent=2)

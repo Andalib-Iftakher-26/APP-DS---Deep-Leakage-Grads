@@ -17,7 +17,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 # Zhu et al. (2019), DLG MSE on [0,1]-normalised images (ResNet-56 variant, 1200 iters)
-PAPER_MSE = {"mnist": 0.0038, "cifar100": 0.0069, "svhn": 0.0051}
+PAPER_MSE = {"mnist": 0.0038, "cifar100": 0.0069, "svhn": 0.0051, "lfw": 0.0055}
 
 
 def fmt(s, key="mean", digits=4):
@@ -35,17 +35,28 @@ def main():
             s = json.load(f)
         s["run"] = os.path.basename(os.path.dirname(path))
         summaries.append(s)
-    if not summaries:
-        print("No summary.json files found.")
-        return
+    text = [s for s in summaries if s.get("type") == "text"]
+    summaries = [s for s in summaries if s.get("type") != "text"]
+    if text:
+        print("Text (BERT) runs:")
+        print("| run | sentences | trials | token acc | input acc | label acc | norm. edit dist | exact match |")
+        print("|---|---|---|---|---|---|---|---|")
+        for t in text:
+            print(f"| {t['run']} | {t['n_sentences']} | {t['n_trials']} | {t['recovered_token_acc']:.0%} | "
+                  f"{t['input_token_acc']:.0%} | {t['label_token_acc']:.0%} | {t['norm_edit_distance']:.3f} | "
+                  f"{t['exact_match_rate']:.0%} |")
+        print()
 
-    header = ["run", "trials", "paper MSE", "MSE mean", "MSE median", "SSIM", "PSNR (dB)",
+    if not summaries:
+        print("No image summary.json files found.")
+        return
+    header = ["run", "model", "trials", "paper MSE", "MSE mean", "MSE median", "SSIM", "PSNR (dB)",
               "label acc", "success/trial", "success best-of-seeds", "median iters to converge",
               "runtime/trial (s)"]
     table = []
     for s in summaries:
         table.append([
-            s["run"], s["n_trials"],
+            s["run"], s.get("model", "lenet"), s["n_trials"],
             PAPER_MSE.get(s["dataset"], "-"),
             fmt(s["mse"]), fmt(s["mse"], "median"), fmt(s["ssim"], digits=3), fmt(s["psnr"], digits=1),
             f"{s['label_accuracy']:.0%}", f"{s['success_rate_per_trial']:.0%}",
