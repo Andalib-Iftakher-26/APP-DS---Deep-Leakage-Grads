@@ -42,7 +42,8 @@ from dlg_lib import (ARCHS, load_dataset, stratified_indices, get_image_tensor, 
 to_pil = transforms.ToPILImage()
 
 
-def batch_attack(net, gt, labels, num_classes, max_iters, seed, threshold, stop_early, device):
+def batch_attack(net, gt, labels, num_classes, max_iters, seed, threshold, stop_early, device,
+                 lbfgs_kwargs=None):
     criterion = cross_entropy_for_onehot
     gt = gt.to(device)
     onehot = label_to_onehot(torch.tensor(labels, device=device).long(), num_classes=num_classes)
@@ -54,7 +55,7 @@ def batch_attack(net, gt, labels, num_classes, max_iters, seed, threshold, stop_
     torch.manual_seed(seed)
     dummy_x = torch.randn(gt.size(), device=device).requires_grad_(True)
     dummy_y = torch.randn(onehot.size(), device=device).requires_grad_(True)
-    opt = torch.optim.LBFGS([dummy_x, dummy_y])
+    opt = torch.optim.LBFGS([dummy_x, dummy_y], **(lbfgs_kwargs or {}))
 
     def closure():
         opt.zero_grad()
@@ -98,6 +99,10 @@ def main():
                    choices=["cifar100", "cifar10", "mnist", "fmnist", "svhn", "lfw", "smartphone"])
     p.add_argument("--model", default="resnet20", choices=ARCHS, help="paper Table 1: resnet20")
     p.add_argument("--init", default="official", choices=["official", "default"])
+    p.add_argument("--resnet-head", default="gap", choices=["pool4", "gap"])
+    p.add_argument("--resnet-bn", action="store_true")
+    p.add_argument("--resnet-skip", default="post", choices=["post", "identity"])
+    p.add_argument("--no-lbfgs-tol", action="store_true")
     p.add_argument("--batch-sizes", type=int, nargs="+", default=[1, 2, 4, 8])
     p.add_argument("--n-batches", type=int, default=2, help="batches per batch size")
     p.add_argument("--seeds", type=int, nargs="+", default=[0])
@@ -115,7 +120,10 @@ def main():
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
     dst, info = load_dataset(args.dataset, args.data_root, args.smartphone_root)
-    net = build_model(info, args.model_seed, device, args.model, args.init)
+    net = build_model(info, args.model_seed, device, args.model, args.init,
+                      resnet_bn=args.resnet_bn, resnet_head=args.resnet_head,
+                      resnet_skip=args.resnet_skip)
+    lbfgs_kwargs = dict(tolerance_grad=0.0, tolerance_change=0.0) if args.no_lbfgs_tol else None
     pool = stratified_indices(dst, args.n_batches * max(args.batch_sizes))
 
     run = f"{args.dataset}_{args.model}_batch" + (f"_{args.tag}" if args.tag else "")
@@ -140,7 +148,8 @@ def main():
                 labels = [y for _, y in items]
                 for seed in args.seeds:
                     r = batch_attack(net, gt, labels, info["classes"], args.max_iters, seed,
-                                     args.converge_threshold, not args.no_early_stop, device)
+                                     args.converge_threshold, not args.no_early_stop, device,
+                                     lbfgs_kwargs)
                     perm = match(gt, r["recon"])
                     finite = bool(torch.isfinite(r["recon"]).all())
                     m = [mse(gt[i], r["recon"][perm[i]]) if finite else float("nan") for i in range(bs)]

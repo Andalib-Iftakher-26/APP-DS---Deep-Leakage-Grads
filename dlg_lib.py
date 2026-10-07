@@ -12,8 +12,9 @@ Extensions for the reproduction study:
     (identical to the original for CIFAR-100: 3x32x32, 100 classes, fc 768->100)
   - Loaders for CIFAR-100, CIFAR-10, MNIST, Fashion-MNIST, SVHN, LFW, and an
     image-folder dataset (the Smartphone Natural Objects dataset)
-  - A Sigmoid ResNet family (resnet20/32/56) approximating the paper's
-    "ResNet-56 with ReLU replaced by Sigmoid and strides removed"
+  - A Sigmoid ResNet family (resnet20/32/56): the paper's "ResNet-56 with ReLU
+    replaced by Sigmoid and strides removed", with BatchNorm and a 4x4 average pool
+    as in the repo's own (broken) ResNet code
   - Evaluation metrics: MSE, PSNR, SSIM, label recovery
 """
 
@@ -62,49 +63,77 @@ def weights_init(m):
 
 
 class _SigmoidBlock(nn.Module):
-    """CIFAR-style basic residual block with Sigmoid instead of ReLU, no BatchNorm
-    (BatchNorm with a single image is ill-defined, and the paper needs the model
-    to be twice differentiable)."""
+    """CIFAR-style basic residual block with Sigmoid instead of ReLU.
+    bn=True follows the repo's own ResNet code (models/vision.py), which uses
+    BatchNorm. With strides removed the feature maps stay 32x32, so BatchNorm
+    statistics are well defined even for a single image."""
 
-    def __init__(self, cin, cout, stride):
+    def __init__(self, cin, cout, stride, bn=True, skip="post"):
         super().__init__()
-        self.conv1 = nn.Conv2d(cin, cout, 3, stride, 1)
-        self.conv2 = nn.Conv2d(cout, cout, 3, 1, 1)
-        self.shortcut = None
+        self.skip = skip
+        norm = (lambda c: nn.BatchNorm2d(c)) if bn else (lambda c: nn.Identity())
+        self.conv1 = nn.Conv2d(cin, cout, 3, stride, 1, bias=not bn)
+        self.bn1 = norm(cout)
+        self.conv2 = nn.Conv2d(cout, cout, 3, 1, 1, bias=not bn)
+        self.bn2 = norm(cout)
+        self.shortcut = nn.Identity()
         if stride != 1 or cin != cout:
-            self.shortcut = nn.Conv2d(cin, cout, 1, stride)
+            self.shortcut = nn.Sequential(nn.Conv2d(cin, cout, 1, stride, bias=not bn), norm(cout))
 
     def forward(self, x):
-        out = torch.sigmoid(self.conv1(x))
-        out = self.conv2(out)
-        sc = x if self.shortcut is None else self.shortcut(x)
-        return torch.sigmoid(out + sc)
+        out = torch.sigmoid(self.bn1(self.conv1(x)))
+        out = self.bn2(self.conv2(out))
+        if self.skip == "identity":
+            # Sigmoid only inside the branch: the skip path stays clean, so the
+            # signal reaches the first layers undamped (He et al., 2016b style)
+            return self.shortcut(x) + out
+        # "post": original ResNet layout, Sigmoid wraps the sum (damps the skip)
+        return torch.sigmoid(out + self.shortcut(x))
 
 
 class ResNetSigmoid(nn.Module):
-    """ResNet-(6n+2) for small images (He et al., 2016, CIFAR variant), with the
-    paper's two modifications: Sigmoid activations and no strides (strides=False).
-    depth 56 = the paper's model. The official repo does not ship a working version."""
+    """ResNet-(6n+2) for small images (He et al., 2016, CIFAR variant) with the
+    paper's two modifications: Sigmoid activations and no strides.
+    depth 56 = the paper's single-image model, depth 20 = its batched model.
 
-    def __init__(self, depth=20, in_channels=3, num_classes=100, image_size=32, strides=False):
+    head="pool4" (default) follows the repo's ResNet code: avg_pool2d(kernel 4)
+    then flatten, which keeps spatial detail (8x8 for 32x32 input) in the final
+    layer's gradient. head="gap" = textbook global average pooling (loses it).
+    bn=False and head="gap" reproduce the first version, whose gradients vanished."""
+
+    def __init__(self, depth=20, in_channels=3, num_classes=100, image_size=32, strides=False,
+                 bn=True, head="pool4", skip="post"):
         super().__init__()
         assert (depth - 2) % 6 == 0, "depth must be 6n+2 (20, 32, 44, 56)"
         n = (depth - 2) // 6
-        self.stem = nn.Conv2d(in_channels, 16, 3, 1, 1)
+        self.head = head
+        self.skip_mode = skip
+        self.stem = nn.Conv2d(in_channels, 16, 3, 1, 1, bias=not bn)
+        self.stem_bn = nn.BatchNorm2d(16) if bn else nn.Identity()
         layers, cin = [], 16
         for stage, cout in enumerate([16, 32, 64]):
             for b in range(n):
                 stride = 2 if (strides and stage > 0 and b == 0) else 1
-                layers.append(_SigmoidBlock(cin, cout, stride))
+                layers.append(_SigmoidBlock(cin, cout, stride, bn, skip))
                 cin = cout
         self.layers = nn.Sequential(*layers)
-        self.fc = nn.Linear(64, num_classes)
+        with torch.no_grad():
+            was_training = self.training
+            n_flat = self._features(torch.zeros(2, in_channels, image_size, image_size)).shape[1]
+            self.train(was_training)
+        self.fc = nn.Linear(n_flat, num_classes)
+
+    def _features(self, x):
+        out = torch.sigmoid(self.stem_bn(self.stem(x)))
+        out = self.layers(out)
+        if self.skip_mode == "identity":
+            out = torch.sigmoid(out)  # bound the features before the classifier
+        if self.head == "gap":
+            return out.mean(dim=(2, 3))
+        return F.avg_pool2d(out, 4).flatten(1)
 
     def forward(self, x):
-        out = torch.sigmoid(self.stem(x))
-        out = self.layers(out)
-        out = out.mean(dim=(2, 3))  # global average pooling
-        return self.fc(out)
+        return self.fc(self._features(x))
 
 
 ARCHS = ("lenet", "resnet20", "resnet32", "resnet56")
@@ -197,6 +226,26 @@ def load_lfw(root, min_faces=20):
                        [idx_to_name[t] for t in keep], loader)
 
 
+def load_cifar10(root):
+    """
+    CIFAR-10 training set. Uses torchvision's copy if already downloaded; otherwise
+    the identical copy on Hugging Face (uoft-cs/cifar10), because the Toronto
+    server can be extremely slow.
+    """
+    try:
+        return datasets.CIFAR10(root, download=False)
+    except RuntimeError:
+        pass
+    try:
+        from datasets import load_dataset as hf_load
+    except ImportError:
+        return datasets.CIFAR10(root, download=True)
+    hf = hf_load("uoft-cs/cifar10", split="train", cache_dir=os.path.join(root, "hf"))
+    img_col = "img" if "img" in hf.column_names else "image"
+    return ListDataset(list(range(len(hf))), hf["label"], hf.features["label"].names,
+                       lambda i: hf[i][img_col])
+
+
 def load_dataset(name, root="~/.torch", smartphone_root=None, image_size=None):
     """Return (dataset, info). dataset[i] -> (PIL image, int label)."""
     root = os.path.expanduser(root)
@@ -204,7 +253,7 @@ def load_dataset(name, root="~/.torch", smartphone_root=None, image_size=None):
     if name == "cifar100":
         dst = datasets.CIFAR100(root, download=True)
     elif name == "cifar10":
-        dst = datasets.CIFAR10(root, download=True)
+        dst = load_cifar10(root)
     elif name == "mnist":
         dst = datasets.MNIST(root, download=True)
     elif name == "fmnist":
@@ -318,7 +367,7 @@ def ssim(x, x_hat, window_size=11):
 # The attack
 # --------------------------------------------------------------------------
 def build_model(info, model_seed=1234, device="cpu", arch="lenet", init="official",
-                resnet_strides=False):
+                resnet_strides=False, resnet_bn=False, resnet_head="gap", resnet_skip="post"):
     """
     arch: lenet (official demo) | resnet20 | resnet32 | resnet56 (paper's model).
     init: "official" = uniform(-0.5, 0.5) as in the repo; "default" = PyTorch default.
@@ -329,7 +378,8 @@ def build_model(info, model_seed=1234, device="cpu", arch="lenet", init="officia
         net = LeNet(info["channels"], info["classes"], info["size"])
     elif arch.startswith("resnet"):
         net = ResNetSigmoid(int(arch[len("resnet"):]), info["channels"], info["classes"],
-                            info["size"], strides=resnet_strides)
+                            info["size"], strides=resnet_strides, bn=resnet_bn, head=resnet_head,
+                            skip=resnet_skip)
     else:
         raise ValueError(f"Unknown arch {arch}; choose from {ARCHS}")
     net = net.to(device)
@@ -349,7 +399,7 @@ def build_model(info, model_seed=1234, device="cpu", arch="lenet", init="officia
 
 
 def run_dlg(net, gt_data, gt_label, num_classes, iters=300, dummy_seed=0,
-            snapshot_every=10, device="cpu", model_seed=1234):
+            snapshot_every=10, device="cpu", model_seed=1234, lbfgs_kwargs=None):
     """
     Run one DLG attack on a single image.
 
@@ -383,7 +433,9 @@ def run_dlg(net, gt_data, gt_label, num_classes, iters=300, dummy_seed=0,
         torch.manual_seed(dummy_seed)
     dummy_data = torch.randn(gt_data.size(), device=device).requires_grad_(True)
     dummy_label = torch.randn(gt_onehot.size(), device=device).requires_grad_(True)
-    optimizer = torch.optim.LBFGS([dummy_data, dummy_label])  # lr=1, history=100, max_iter=20 (defaults)
+    # lr=1, history=100, max_iter=20 (PyTorch defaults = official code). lbfgs_kwargs lets the
+    # deeper models switch off L-BFGS's early-stopping tolerances, which tiny losses can trigger.
+    optimizer = torch.optim.LBFGS([dummy_data, dummy_label], **(lbfgs_kwargs or {}))
 
     loss_history, snapshots = [], []
     start = time.time()

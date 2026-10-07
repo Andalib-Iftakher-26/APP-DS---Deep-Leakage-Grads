@@ -121,6 +121,13 @@ def main():
                    help="official = uniform(-0.5,0.5) as in the repo; default = PyTorch init")
     p.add_argument("--resnet-strides", action="store_true",
                    help="keep ResNet strides (the paper removed them)")
+    p.add_argument("--resnet-head", default="gap", choices=["pool4", "gap"],
+                   help="gap = global average pooling; pool4 = repo-style 4x4 avg pool + flatten")
+    p.add_argument("--resnet-bn", action="store_true", help="add BatchNorm to the ResNet")
+    p.add_argument("--resnet-skip", default="post", choices=["post", "identity"],
+                   help="post = Sigmoid wraps the residual sum; identity = clean skip path")
+    p.add_argument("--no-lbfgs-tol", action="store_true",
+                   help="disable L-BFGS early-stop tolerances (for tiny gradient losses)")
     p.add_argument("--n-images", type=int, default=20, help="class-balanced sample size")
     p.add_argument("--indices", type=int, nargs="*", help="explicit dataset indices (overrides --n-images)")
     p.add_argument("--seeds", type=int, nargs="+", default=[0, 1, 2], help="dummy-initialisation seeds; -1 = official main.py behaviour")
@@ -156,7 +163,10 @@ def main():
     print(f"{len(indices)} images x {len(args.seeds)} seeds = {len(indices) * len(args.seeds)} trials, "
           f"{args.iters} iterations each\n")
 
-    net = build_model(info, args.model_seed, device, args.model, args.init, args.resnet_strides)
+    net = build_model(info, args.model_seed, device, args.model, args.init, args.resnet_strides,
+                      resnet_bn=args.resnet_bn, resnet_head=args.resnet_head,
+                      resnet_skip=args.resnet_skip)
+    lbfgs_kwargs = dict(tolerance_grad=0.0, tolerance_change=0.0) if args.no_lbfgs_tol else None
     fields = ["dataset", "model", "index", "true_label", "class_name", "seed", "pred_label", "label_correct",
               "mse", "psnr", "ssim", "final_grad_loss", "iters_to_converge", "runtime_s",
               "diverged", "success"]
@@ -170,7 +180,7 @@ def main():
             gt, label = get_image_tensor(dst, idx, info)
             for seed in args.seeds:
                 res = run_dlg(net, gt, label, info["classes"], args.iters, seed, device=device,
-                              model_seed=args.model_seed)
+                              model_seed=args.model_seed, lbfgs_kwargs=lbfgs_kwargs)
                 recon = res["recon"]
                 finite = torch.isfinite(recon).all().item()
                 m = mse(gt, recon) if finite else float("nan")
@@ -203,6 +213,10 @@ def main():
                       f"{res['runtime_s']:.1f}s")
 
     summary = summarise(rows, args.success_mse)
+    if args.model != "lenet":
+        summary.update(resnet_bn=args.resnet_bn, resnet_head=args.resnet_head,
+                      resnet_skip=args.resnet_skip)
+    summary.update(lbfgs_tolerances=not args.no_lbfgs_tol)
     summary.update(dataset=args.dataset, model=args.model, init=args.init, iters=args.iters, seeds=args.seeds,
                    image_shape=[info["channels"], info["size"], info["size"]], device=device)
     with open(os.path.join(out_dir, "summary.json"), "w") as f:
