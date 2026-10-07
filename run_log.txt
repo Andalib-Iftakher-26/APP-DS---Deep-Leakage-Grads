@@ -280,3 +280,116 @@ Dataset mnist: 60000 images, 10 classes, 1x28x28 | model lenet | device cpu
 }
 
 Saved to results/mnist/
+Dataset svhn: 26032 images, 10 classes, 3x32x32 | model lenet | device cpu
+20 images x 3 seeds = 60 trials, 300 iterations each
+
+[1/20] idx 12937 (0) seed 0: MSE 0.0003  SSIM 0.965  label OK  17.4s
+[1/20] idx 12937 (0) seed 1: MSE 0.0002  SSIM 0.970  label OK  18.9s
+[1/20] idx 12937 (0) seed 2: MSE 0.0002  SSIM 0.977  label OK  19.1s
+[2/20] idx 18801 (1) seed 0: MSE 0.0001  SSIM 0.998  label OK  18.6s
+[2/20] idx 18801 (1) seed 1: MSE 0.0000  SSIM 0.999  label OK  23.1s
+[2/20] idx 18801 (1) seed 2: MSE 0.0001  SSIM 0.998  label OK  19.9s
+[3/20] idx 18755 (2) seed 0: MSE 0.0000  SSIM 1.000  label OK  18.0s
+[3/20] idx 18755 (2) seed 1: MSE 0.3144  SSIM 0.043  label X  4.5s
+[3/20] idx 18755 (2) seed 2: MSE 0.0000  SSIM 1.000  label OK  18.6s
+[4/20] idx 23539 (3) seed 0: MSE 0.0000  SSIM 1.000  label OK  16.6s
+[4/20] idx 23539 (3) seed 1: MSE 0.0000  SSIM 1.000  label OK  15.8s
+[4/20] idx 23539 (3) seed 2: MSE 0.0000  SSIM 1.000  label OK  15.8s
+[5/20] idx 26003 (4) seed 0: MSE 0.0000  SSIM 1.000  label OK  17.6s
+[5/20] idx 26003 (4) seed 1: MSE 0.0000  SSIM 1.000  label OK  17.5s
+[5/20] idx 26003 (4) seed 2: MSE 0.0000  SSIM 1.000  label OK  33.7s
+[6/20] idx 14632 (5) seed 0: MSE 0.0150  SSIM 0.736  label OK  46.2s
+[6/20] idx 14632 (5) seed 1: MSE 0.0000  SSIM 0.999  label OK  44.7s
+[6/20] idx 14632 (5) seed 2: MSE 0.0000  SSIM 0.999  label OK  31.1s
+[7/20] idx 16540 (6) seed 0: MSE 0.0000  SSIM 1.000  label OK  17.6s
+[7/20] idx 16540 (6) seed 1: MSE 0.2594  SSIM 0.073  label X  1.8s
+[7/20] idx 16540 (6) seed 2: MSE 0.0000  SSIM 1.000  label OK  16.4s
+[8/20] idx 19802 (7) seed 0: MSE 0.0000  SSIM 1.000  label OK  18.5s
+[8/20] idx 19802 (7) seed 1: MSE 0.0000  SSIM 1.000  label OK  16.5s
+[8/20] idx 19802 (7) seed 2: MSE 0.0000  SSIM 1.000  label OK  19.4s
+[9/20] idx 25975 (8) seed 0: MSE 0.0000  SSIM 1.000  label OK  19.2s
+[9/20] idx 25975 (8) seed 1: MSE 0.0000  SSIM 1.000  label OK  20.6s
+[9/20] idx 25975 (8) seed 2: MSE 0.0000  SSIM 1.000  label OK  19.9s
+[10/20] idx 23805 (9) seed 0: MSE 0.0000  SSIM 1.000  label OK  18.3s
+[10/20] idx 23805 (9) seed 1: MSE 0.0000  SSIM 0.999  label OK  24.8s
+[10/20] idx 23805 (9) seed 2: MSE 0.0000  SSIM 0.999  label OK  18.1s
+[11/20] idx 16578 (0) seed 0: MSE 0.0003  SSIM 0.979  label OK  19.9s
+[11/20] idx 16578 (0) seed 1: MSE 0.0003  SSIM 0.975  label OK  21.1s
+[11/20] idx 16578 (0) seed 2: MSE 0.2887  SSIM 0.057  label X  2.8s
+[12/20] idx  4532 (1) seed 0: MSE 0.0000  SSIM 1.000  label OK  19.3s
+[12/20] idx  4532 (1) seed 1: MSE 0.2830  SSIM 0.047  label X  3.4s
+[12/20] idx  4532 (1) seed 2: MSE 0.0000  SSIM 0.999  label OK  16.8s
+[13/20] idx  2624 (2) seed 0: MSE 0.0000  SSIM 1.000  label OK  17.4s
+[13/20] idx  2624 (2) seed 1: MSE 0.0000  SSIM 1.000  label OK  15.8s
+[13/20] idx  2624 (2) seed 2: MSE 0.0000  SSIM 1.000  label OK  17.2s
+[14/20] idx 11449 (3) seed 0: MSE 0.0000  SSIM 1.000  label OK  19.1s
+[14/20] idx 11449 (3) seed 1: MSE 0.0000  SSIM 1.000  label OK  17.4s
+[14/20] idx 11449 (3) seed 2: MSE 0.0000  SSIM 0.999  label OK  15.7s
+[15/20] idx 24188 (4) seed 0: MSE 0.0000  SSIM 1.000  label OK  17.5s
+[15/20] idx 24188 (4) seed 1: MSE 0.0000  SSIM 0.999  label OK  16.2s
+[15/20] idx 24188 (4) seed 2: MSE 0.3353  SSIM 0.044  label OK  1.8s
+[16/20] idx  6974 (5) seed 0: MSE 0.0000  SSIM 0.999  label OK  20.0s
+[16/20] idx  6974 (5) seed 1: MSE 0.0000  SSIM 0.999  label OK  14.4s
+[16/20] idx  6974 (5) seed 2: MSE 0.0000  SSIM 0.999  label OK  19.3s
+[17/20] idx   191 (6) seed 0: MSE 0.0000  SSIM 1.000  label OK  16.8s
+[17/20] idx   191 (6) seed 1: MSE 0.3044  SSIM 0.047  label X  2.1s
+[17/20] idx   191 (6) seed 2: MSE 0.0000  SSIM 1.000  label OK  16.0s
+[18/20] idx  3063 (7) seed 0: MSE 0.0000  SSIM 0.999  label OK  17.0s
+[18/20] idx  3063 (7) seed 1: MSE 0.0000  SSIM 1.000  label OK  16.8s
+[18/20] idx  3063 (7) seed 2: MSE 0.0000  SSIM 1.000  label OK  16.6s
+[19/20] idx 24935 (8) seed 0: MSE 0.3393  SSIM 0.030  label OK  1.8s
+[19/20] idx 24935 (8) seed 1: MSE 0.0000  SSIM 1.000  label OK  15.7s
+[19/20] idx 24935 (8) seed 2: MSE 0.0000  SSIM 1.000  label OK  18.2s
+[20/20] idx 14446 (9) seed 0: MSE 0.0000  SSIM 0.998  label OK  19.1s
+[20/20] idx 14446 (9) seed 1: MSE 0.0000  SSIM 0.999  label OK  18.7s
+[20/20] idx 14446 (9) seed 2: MSE 0.2588  SSIM 0.102  label X  1.9s
+
+=== Summary ===
+{
+  "n_trials": 60,
+  "n_images": 20,
+  "n_diverged": 0,
+  "mse": {
+    "mean": 0.04000241655231965,
+    "std": 0.10259050942888415,
+    "median": 9.997002052841708e-06
+  },
+  "psnr": {
+    "mean": 44.11465304530462,
+    "std": 17.084616813255916,
+    "median": 50.03470729727303
+  },
+  "ssim": {
+    "mean": 0.8669940695166588,
+    "std": 0.32298362090206273,
+    "median": 0.999491810798645
+  },
+  "runtime_s": {
+    "mean": 17.399923451741536,
+    "std": 8.24263796410127,
+    "median": 17.563917875289917
+  },
+  "label_accuracy": 0.9,
+  "success_threshold_mse": 0.01,
+  "success_rate_per_trial": 0.85,
+  "success_rate_best_of_seeds": 1.0,
+  "median_iters_to_converge": 50,
+  "n_converged": 51,
+  "dataset": "svhn",
+  "model": "lenet",
+  "init": "official",
+  "iters": 300,
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "image_shape": [
+    3,
+    32,
+    32
+  ],
+  "device": "cpu"
+}
+
+Saved to results/svhn/
