@@ -393,3 +393,436 @@ Dataset svhn: 26032 images, 10 classes, 3x32x32 | model lenet | device cpu
 }
 
 Saved to results/svhn/
+Dataset lfw: 3023 images, 62 classes, 3x32x32 | model lenet | device cpu
+20 images x 3 seeds = 60 trials, 300 iterations each
+
+[1/20] idx  2998 (Alejandro Toledo) seed 0: MSE 0.3006  SSIM 0.092  label X  20.0s
+[1/20] idx  2998 (Alejandro Toledo) seed 1: MSE 0.0000  SSIM 0.999  label OK  25.8s
+[1/20] idx  2998 (Alejandro Toledo) seed 2: MSE 0.0000  SSIM 0.999  label OK  21.4s
+[2/20] idx     4 (Alvaro Uribe) seed 0: MSE 0.0000  SSIM 1.000  label OK  19.1s
+[2/20] idx     4 (Alvaro Uribe) seed 1: MSE 0.2846  SSIM 0.108  label OK  3.2s
+[2/20] idx     4 (Alvaro Uribe) seed 2: MSE 0.0000  SSIM 1.000  label OK  18.9s
+[3/20] idx  1379 (Amelie Mauresmo) seed 0: MSE 0.0000  SSIM 1.000  label OK  19.9s
+[3/20] idx  1379 (Amelie Mauresmo) seed 1: MSE 0.0000  SSIM 1.000  label OK  17.8s
+[3/20] idx  1379 (Amelie Mauresmo) seed 2: MSE 0.3092  SSIM 0.058  label X  1.7s
+[4/20] idx  1280 (Andre Agassi) seed 0: MSE 0.2934  SSIM 0.072  label OK  37.1s
+[4/20] idx  1280 (Andre Agassi) seed 1: MSE 0.2984  SSIM 0.079  label OK  37.2s
+[4/20] idx  1280 (Andre Agassi) seed 2: MSE 0.3068  SSIM 0.070  label OK  1.7s
+[5/20] idx  1665 (Angelina Jolie) seed 0: MSE 0.0000  SSIM 1.000  label OK  21.6s
+[5/20] idx  1665 (Angelina Jolie) seed 1: MSE 0.0000  SSIM 1.000  label OK  19.4s
+[5/20] idx  1665 (Angelina Jolie) seed 2: MSE 0.0000  SSIM 1.000  label OK  18.4s
+[6/20] idx   162 (Ariel Sharon) seed 0: MSE 0.2975  SSIM 0.091  label OK  2.0s
+[6/20] idx   162 (Ariel Sharon) seed 1: MSE 0.0000  SSIM 1.000  label OK  19.1s
+[6/20] idx   162 (Ariel Sharon) seed 2: MSE 0.0000  SSIM 1.000  label OK  18.2s
+[7/20] idx   766 (Arnold Schwarzenegger) seed 0: MSE 0.2773  SSIM 0.067  label X  2.1s
+[7/20] idx   766 (Arnold Schwarzenegger) seed 1: MSE 0.0000  SSIM 1.000  label OK  17.3s
+[7/20] idx   766 (Arnold Schwarzenegger) seed 2: MSE 0.0000  SSIM 1.000  label OK  17.5s
+[8/20] idx   542 (Atal Bihari Vajpayee) seed 0: MSE 0.0000  SSIM 1.000  label OK  19.7s
+[8/20] idx   542 (Atal Bihari Vajpayee) seed 1: MSE 0.0000  SSIM 0.999  label OK  20.6s
+[8/20] idx   542 (Atal Bihari Vajpayee) seed 2: MSE 0.0000  SSIM 0.999  label OK  19.7s
+[9/20] idx  1111 (Bill Clinton) seed 0: MSE 0.2846  SSIM 0.091  label X  36.7s
+[9/20] idx  1111 (Bill Clinton) seed 1: MSE 0.2280  SSIM 0.142  label OK  37.0s
+[9/20] idx  1111 (Bill Clinton) seed 2: MSE 0.0000  SSIM 1.000  label OK  17.2s
+[10/20] idx  1668 (Carlos Menem) seed 0: MSE 0.2821  SSIM 0.080  label X  2.5s
+[10/20] idx  1668 (Carlos Menem) seed 1: MSE 0.0000  SSIM 1.000  label OK  20.6s
+[10/20] idx  1668 (Carlos Menem) seed 2: MSE 0.0000  SSIM 1.000  label OK  18.7s
+[11/20] idx  1575 (Colin Powell) seed 0: MSE 0.2571  SSIM 0.128  label OK  37.0s
+[11/20] idx  1575 (Colin Powell) seed 1: MSE 0.0000  SSIM 1.000  label OK  18.3s
+[11/20] idx  1575 (Colin Powell) seed 2: MSE 0.0000  SSIM 1.000  label OK  19.0s
+[12/20] idx  1336 (David Beckham) seed 0: MSE 0.2756  SSIM 0.085  label X  6.2s
+[12/20] idx  1336 (David Beckham) seed 1: MSE 0.0000  SSIM 1.000  label OK  18.5s
+[12/20] idx  1336 (David Beckham) seed 2: MSE 0.0000  SSIM 1.000  label OK  18.0s
+[13/20] idx  1288 (Donald Rumsfeld) seed 0: MSE 0.2688  SSIM 0.102  label OK  37.5s
+[13/20] idx  1288 (Donald Rumsfeld) seed 1: MSE 0.0000  SSIM 1.000  label OK  18.0s
+[13/20] idx  1288 (Donald Rumsfeld) seed 2: MSE 0.0000  SSIM 1.000  label OK  17.9s
+[14/20] idx     8 (George Robertson) seed 0: MSE 0.2748  SSIM 0.100  label X  36.8s
+[14/20] idx     8 (George Robertson) seed 1: MSE 0.0000  SSIM 1.000  label OK  19.2s
+[14/20] idx     8 (George Robertson) seed 2: MSE 0.3005  SSIM 0.090  label OK  1.8s
+[15/20] idx   903 (George W Bush) seed 0: MSE 0.2747  SSIM 0.084  label X  2.0s
+[15/20] idx   903 (George W Bush) seed 1: MSE 0.0000  SSIM 1.000  label OK  21.6s
+[15/20] idx   903 (George W Bush) seed 2: MSE 0.2693  SSIM 0.090  label X  2.3s
+[16/20] idx   158 (Gerhard Schroeder) seed 0: MSE 0.2378  SSIM 0.125  label OK  37.1s
+[16/20] idx   158 (Gerhard Schroeder) seed 1: MSE 0.0000  SSIM 1.000  label OK  19.8s
+[16/20] idx   158 (Gerhard Schroeder) seed 2: MSE 0.0000  SSIM 1.000  label OK  20.3s
+[17/20] idx  2264 (Gloria Macapagal Arroyo) seed 0: MSE 0.0000  SSIM 1.000  label OK  25.6s
+[17/20] idx  2264 (Gloria Macapagal Arroyo) seed 1: MSE 0.0000  SSIM 1.000  label OK  19.5s
+[17/20] idx  2264 (Gloria Macapagal Arroyo) seed 2: MSE 0.1671  SSIM 0.162  label OK  37.1s
+[18/20] idx  2540 (Gray Davis) seed 0: MSE 0.2889  SSIM 0.098  label X  3.7s
+[18/20] idx  2540 (Gray Davis) seed 1: MSE 0.0001  SSIM 0.999  label OK  27.2s
+[18/20] idx  2540 (Gray Davis) seed 2: MSE 0.0001  SSIM 0.999  label OK  22.1s
+[19/20] idx  2483 (Guillermo Coria) seed 0: MSE 0.2599  SSIM 0.109  label OK  36.9s
+[19/20] idx  2483 (Guillermo Coria) seed 1: MSE 0.0000  SSIM 1.000  label OK  21.0s
+[19/20] idx  2483 (Guillermo Coria) seed 2: MSE 0.0000  SSIM 1.000  label OK  17.4s
+[20/20] idx   352 (Hamid Karzai) seed 0: MSE 0.2377  SSIM 0.109  label OK  36.7s
+[20/20] idx   352 (Hamid Karzai) seed 1: MSE 0.3198  SSIM 0.060  label OK  2.5s
+[20/20] idx   352 (Hamid Karzai) seed 2: MSE 0.0000  SSIM 1.000  label OK  16.9s
+
+=== Summary ===
+{
+  "n_trials": 60,
+  "n_images": 20,
+  "n_diverged": 0,
+  "mse": {
+    "mean": 0.10991828409851981,
+    "std": 0.13726772636933157,
+    "median": 1.3463637060340261e-05
+  },
+  "psnr": {
+    "mean": 33.193692418851896,
+    "std": 22.91225727035004,
+    "median": 48.71453122034938
+  },
+  "ssim": {
+    "mean": 0.6379764736319582,
+    "std": 0.44699708475685757,
+    "median": 0.99949511885643
+  },
+  "runtime_s": {
+    "mean": 19.502790943781534,
+    "std": 10.889526022617096,
+    "median": 19.18326961994171
+  },
+  "label_accuracy": 0.8333333333333334,
+  "success_threshold_mse": 0.01,
+  "success_rate_per_trial": 0.6,
+  "success_rate_best_of_seeds": 0.95,
+  "median_iters_to_converge": 50.0,
+  "n_converged": 36,
+  "dataset": "lfw",
+  "model": "lenet",
+  "init": "official",
+  "iters": 300,
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "image_shape": [
+    3,
+    32,
+    32
+  ],
+  "device": "cpu"
+}
+
+Saved to results/lfw/
+Dataset cifar10: 50000 images, 10 classes, 3x32x32 | model lenet | device cpu
+20 images x 3 seeds = 60 trials, 300 iterations each
+
+[1/20] idx 24681 (airplane) seed 0: MSE 0.0003  SSIM 0.985  label OK  22.1s
+[1/20] idx 24681 (airplane) seed 1: MSE 0.0003  SSIM 0.984  label OK  22.3s
+[1/20] idx 24681 (airplane) seed 2: MSE 0.0004  SSIM 0.978  label OK  20.8s
+[2/20] idx  8628 (automobile) seed 0: MSE 0.0000  SSIM 1.000  label OK  20.7s
+[2/20] idx  8628 (automobile) seed 1: MSE 0.0000  SSIM 1.000  label OK  19.7s
+[2/20] idx  8628 (automobile) seed 2: MSE 0.0000  SSIM 1.000  label OK  16.5s
+[3/20] idx 36293 (bird) seed 0: MSE 0.0001  SSIM 0.991  label OK  27.6s
+[3/20] idx 36293 (bird) seed 1: MSE 0.0001  SSIM 0.993  label OK  27.8s
+[3/20] idx 36293 (bird) seed 2: MSE 0.0001  SSIM 0.993  label OK  27.5s
+[4/20] idx 16904 (cat) seed 0: MSE 0.0000  SSIM 1.000  label OK  20.6s
+[4/20] idx 16904 (cat) seed 1: MSE 0.0000  SSIM 1.000  label OK  19.9s
+[4/20] idx 16904 (cat) seed 2: MSE 0.0000  SSIM 1.000  label OK  20.5s
+[5/20] idx 23932 (deer) seed 0: MSE 0.0003  SSIM 0.997  label OK  26.4s
+[5/20] idx 23932 (deer) seed 1: MSE 0.0002  SSIM 0.998  label OK  30.6s
+[5/20] idx 23932 (deer) seed 2: MSE 0.0003  SSIM 0.997  label OK  28.4s
+[6/20] idx 11341 (dog) seed 0: MSE 0.0000  SSIM 1.000  label OK  17.3s
+[6/20] idx 11341 (dog) seed 1: MSE 0.0000  SSIM 1.000  label OK  17.7s
+[6/20] idx 11341 (dog) seed 2: MSE 0.0000  SSIM 1.000  label OK  22.6s
+[7/20] idx 36044 (frog) seed 0: MSE 0.0000  SSIM 1.000  label OK  17.9s
+[7/20] idx 36044 (frog) seed 1: MSE 0.0000  SSIM 1.000  label OK  17.4s
+[7/20] idx 36044 (frog) seed 2: MSE 0.0000  SSIM 1.000  label OK  17.2s
+[8/20] idx 37807 (horse) seed 0: MSE 0.0000  SSIM 1.000  label OK  18.3s
+[8/20] idx 37807 (horse) seed 1: MSE 0.0000  SSIM 1.000  label OK  18.3s
+[8/20] idx 37807 (horse) seed 2: MSE 0.0000  SSIM 1.000  label OK  16.6s
+[9/20] idx 49165 (ship) seed 0: MSE 0.0000  SSIM 1.000  label OK  20.3s
+[9/20] idx 49165 (ship) seed 1: MSE 0.0000  SSIM 1.000  label OK  20.1s
+[9/20] idx 49165 (ship) seed 2: MSE 0.0000  SSIM 1.000  label OK  18.0s
+[10/20] idx 17849 (truck) seed 0: MSE 0.0000  SSIM 1.000  label OK  17.0s
+[10/20] idx 17849 (truck) seed 1: MSE 0.3013  SSIM 0.081  label X  14.1s
+[10/20] idx 17849 (truck) seed 2: MSE 0.0000  SSIM 1.000  label OK  17.6s
+[11/20] idx 42151 (airplane) seed 0: MSE 0.0003  SSIM 0.984  label OK  21.3s
+[11/20] idx 42151 (airplane) seed 1: MSE 0.0005  SSIM 0.973  label OK  24.4s
+[11/20] idx 42151 (airplane) seed 2: MSE 0.3445  SSIM 0.030  label X  1.9s
+[12/20] idx 24936 (automobile) seed 0: MSE 0.0000  SSIM 1.000  label OK  20.9s
+[12/20] idx 24936 (automobile) seed 1: MSE 0.2966  SSIM 0.077  label X  1.6s
+[12/20] idx 24936 (automobile) seed 2: MSE 0.3098  SSIM 0.093  label X  2.7s
+[13/20] idx 28026 (bird) seed 0: MSE 0.0000  SSIM 0.998  label OK  24.8s
+[13/20] idx 28026 (bird) seed 1: MSE 0.0000  SSIM 0.999  label OK  22.3s
+[13/20] idx 28026 (bird) seed 2: MSE 0.0000  SSIM 0.999  label OK  23.6s
+[14/20] idx 20152 (cat) seed 0: MSE 0.0000  SSIM 1.000  label OK  18.7s
+[14/20] idx 20152 (cat) seed 1: MSE 0.0000  SSIM 1.000  label OK  19.4s
+[14/20] idx 20152 (cat) seed 2: MSE 0.0000  SSIM 1.000  label OK  18.7s
+[15/20] idx 33744 (deer) seed 0: MSE 0.0000  SSIM 1.000  label OK  19.4s
+[15/20] idx 33744 (deer) seed 1: MSE 0.3001  SSIM 0.097  label X  1.8s
+[15/20] idx 33744 (deer) seed 2: MSE 0.0000  SSIM 1.000  label OK  18.1s
+[16/20] idx  6091 (dog) seed 0: MSE 0.0000  SSIM 1.000  label OK  18.5s
+[16/20] idx  6091 (dog) seed 1: MSE 0.0000  SSIM 1.000  label OK  20.8s
+[16/20] idx  6091 (dog) seed 2: MSE 0.0000  SSIM 1.000  label OK  19.8s
+[17/20] idx 25569 (frog) seed 0: MSE 0.3262  SSIM 0.058  label OK  1.9s
+[17/20] idx 25569 (frog) seed 1: MSE 0.3049  SSIM 0.046  label X  2.6s
+[17/20] idx 25569 (frog) seed 2: MSE 0.0000  SSIM 1.000  label OK  18.3s
+[18/20] idx  4480 (horse) seed 0: MSE 0.0000  SSIM 0.999  label OK  21.0s
+[18/20] idx  4480 (horse) seed 1: MSE 0.0000  SSIM 0.999  label OK  19.5s
+[18/20] idx  4480 (horse) seed 2: MSE 0.0000  SSIM 0.999  label OK  20.7s
+[19/20] idx 43846 (ship) seed 0: MSE 0.0001  SSIM 0.994  label OK  24.3s
+[19/20] idx 43846 (ship) seed 1: MSE 0.0001  SSIM 0.993  label OK  24.9s
+[19/20] idx 43846 (ship) seed 2: MSE 0.0000  SSIM 0.994  label OK  23.0s
+[20/20] idx 49031 (truck) seed 0: MSE 0.0000  SSIM 1.000  label OK  20.9s
+[20/20] idx 49031 (truck) seed 1: MSE 0.0000  SSIM 0.999  label OK  20.3s
+[20/20] idx 49031 (truck) seed 2: MSE 0.3569  SSIM 0.084  label OK  1.7s
+
+=== Summary ===
+{
+  "n_trials": 60,
+  "n_images": 20,
+  "n_diverged": 0,
+  "mse": {
+    "mean": 0.04239700749855804,
+    "std": 0.1091107085543605,
+    "median": 2.2334847926686052e-05
+  },
+  "psnr": {
+    "mean": 41.52990600854548,
+    "std": 15.837476344249833,
+    "median": 46.51056845774241
+  },
+  "ssim": {
+    "mean": 0.8734780922221641,
+    "std": 0.3176210745138168,
+    "median": 0.9995732009410858
+  },
+  "runtime_s": {
+    "mean": 18.6539084037145,
+    "std": 6.907120387591101,
+    "median": 19.883907318115234
+  },
+  "label_accuracy": 0.9,
+  "success_threshold_mse": 0.01,
+  "success_rate_per_trial": 0.8666666666666667,
+  "success_rate_best_of_seeds": 1.0,
+  "median_iters_to_converge": 60.0,
+  "n_converged": 52,
+  "dataset": "cifar10",
+  "model": "lenet",
+  "init": "official",
+  "iters": 300,
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "image_shape": [
+    3,
+    32,
+    32
+  ],
+  "device": "cpu"
+}
+
+Saved to results/cifar10/
+Dataset fmnist: 60000 images, 10 classes, 1x28x28 | model lenet | device cpu
+20 images x 3 seeds = 60 trials, 300 iterations each
+
+[1/20] idx 26236 (T-shirt/top) seed 0: MSE 0.0000  SSIM 1.000  label OK  3.9s
+[1/20] idx 26236 (T-shirt/top) seed 1: MSE 0.0000  SSIM 1.000  label OK  4.3s
+[1/20] idx 26236 (T-shirt/top) seed 2: MSE 0.3464  SSIM 0.062  label OK  33.7s
+[2/20] idx 25909 (Trouser) seed 0: MSE 0.4149  SSIM 0.028  label X  1.4s
+[2/20] idx 25909 (Trouser) seed 1: MSE 0.4406  SSIM 0.018  label X  34.4s
+[2/20] idx 25909 (Trouser) seed 2: MSE 0.4353  SSIM 0.015  label X  1.9s
+[3/20] idx 39619 (Pullover) seed 0: MSE 0.4060  SSIM 0.024  label OK  33.9s
+[3/20] idx 39619 (Pullover) seed 1: MSE 0.0000  SSIM 1.000  label OK  5.8s
+[3/20] idx 39619 (Pullover) seed 2: MSE 0.4030  SSIM 0.018  label X  1.5s
+[4/20] idx 15479 (Dress) seed 0: MSE 0.0000  SSIM 1.000  label OK  5.1s
+[4/20] idx 15479 (Dress) seed 1: MSE 0.3739  SSIM 0.050  label OK  34.2s
+[4/20] idx 15479 (Dress) seed 2: MSE 0.0000  SSIM 1.000  label OK  5.6s
+[5/20] idx 55074 (Coat) seed 0: MSE 0.0000  SSIM 1.000  label OK  5.1s
+[5/20] idx 55074 (Coat) seed 1: MSE 0.0000  SSIM 1.000  label OK  5.9s
+[5/20] idx 55074 (Coat) seed 2: MSE 0.0000  SSIM 1.000  label OK  6.0s
+[6/20] idx 47621 (Sandal) seed 0: MSE 0.3717  SSIM 0.067  label X  1.4s
+[6/20] idx 47621 (Sandal) seed 1: MSE 0.0000  SSIM 1.000  label OK  6.3s
+[6/20] idx 47621 (Sandal) seed 2: MSE 0.3805  SSIM 0.088  label OK  34.1s
+[7/20] idx 36044 (Shirt) seed 0: MSE 0.3713  SSIM 0.020  label X  1.7s
+[7/20] idx 36044 (Shirt) seed 1: MSE 0.0000  SSIM 1.000  label OK  4.4s
+[7/20] idx 36044 (Shirt) seed 2: MSE 0.3560  SSIM 0.015  label X  1.5s
+[8/20] idx 10678 (Sneaker) seed 0: MSE 0.0000  SSIM 1.000  label OK  5.7s
+[8/20] idx 10678 (Sneaker) seed 1: MSE 0.4586  SSIM 0.013  label OK  33.6s
+[8/20] idx 10678 (Sneaker) seed 2: MSE 0.4415  SSIM 0.033  label X  1.9s
+[9/20] idx 58716 (Bag) seed 0: MSE 0.0000  SSIM 1.000  label OK  5.2s
+[9/20] idx 58716 (Bag) seed 1: MSE 0.0000  SSIM 1.000  label OK  4.4s
+[9/20] idx 58716 (Bag) seed 2: MSE 0.4281  SSIM 0.031  label X  1.8s
+[10/20] idx 57327 (Ankle boot) seed 0: MSE 0.0000  SSIM 1.000  label OK  4.9s
+[10/20] idx 57327 (Ankle boot) seed 1: MSE 0.0000  SSIM 1.000  label OK  5.2s
+[10/20] idx 57327 (Ankle boot) seed 2: MSE 0.4581  SSIM 0.031  label OK  1.7s
+[11/20] idx 21795 (T-shirt/top) seed 0: MSE 0.0000  SSIM 1.000  label OK  4.4s
+[11/20] idx 21795 (T-shirt/top) seed 1: MSE 0.3832  SSIM 0.040  label X  1.6s
+[11/20] idx 21795 (T-shirt/top) seed 2: MSE 0.3626  SSIM 0.068  label OK  33.6s
+[12/20] idx 56993 (Trouser) seed 0: MSE 0.4041  SSIM 0.037  label X  34.0s
+[12/20] idx 56993 (Trouser) seed 1: MSE 0.0000  SSIM 1.000  label OK  5.4s
+[12/20] idx 56993 (Trouser) seed 2: MSE 0.4198  SSIM 0.021  label OK  1.6s
+[13/20] idx 56094 (Pullover) seed 0: MSE 0.3696  SSIM 0.037  label X  1.8s
+[13/20] idx 56094 (Pullover) seed 1: MSE 0.0000  SSIM 1.000  label OK  4.9s
+[13/20] idx 56094 (Pullover) seed 2: MSE 0.3840  SSIM -0.003  label X  2.3s
+[14/20] idx  3020 (Dress) seed 0: MSE 0.0000  SSIM 1.000  label OK  5.6s
+[14/20] idx  3020 (Dress) seed 1: MSE 0.0000  SSIM 1.000  label OK  4.8s
+[14/20] idx  3020 (Dress) seed 2: MSE 0.0000  SSIM 1.000  label OK  5.8s
+[15/20] idx  9481 (Coat) seed 0: MSE 0.3935  SSIM -0.021  label X  1.5s
+[15/20] idx  9481 (Coat) seed 1: MSE 0.0000  SSIM 1.000  label OK  5.5s
+[15/20] idx  9481 (Coat) seed 2: MSE 0.0000  SSIM 1.000  label OK  4.4s
+[16/20] idx 53728 (Sandal) seed 0: MSE 0.4637  SSIM 0.014  label X  1.8s
+[16/20] idx 53728 (Sandal) seed 1: MSE 0.0000  SSIM 1.000  label OK  5.5s
+[16/20] idx 53728 (Sandal) seed 2: MSE 0.0000  SSIM 1.000  label OK  5.3s
+[17/20] idx  9597 (Shirt) seed 0: MSE 0.4049  SSIM 0.029  label X  6.7s
+[17/20] idx  9597 (Shirt) seed 1: MSE 0.4325  SSIM -0.001  label OK  1.4s
+[17/20] idx  9597 (Shirt) seed 2: MSE 0.3808  SSIM 0.079  label OK  33.8s
+[18/20] idx 26145 (Sneaker) seed 0: MSE 0.0000  SSIM 1.000  label OK  5.9s
+[18/20] idx 26145 (Sneaker) seed 1: MSE 0.4855  SSIM 0.002  label X  2.1s
+[18/20] idx 26145 (Sneaker) seed 2: MSE 0.0000  SSIM 1.000  label OK  5.9s
+[19/20] idx  4072 (Bag) seed 0: MSE 0.0000  SSIM 1.000  label OK  5.2s
+[19/20] idx  4072 (Bag) seed 1: MSE 0.3493  SSIM 0.064  label X  2.1s
+[19/20] idx  4072 (Bag) seed 2: MSE 0.0000  SSIM 1.000  label OK  4.7s
+[20/20] idx 21567 (Ankle boot) seed 0: MSE 0.4534  SSIM -0.013  label X  2.3s
+[20/20] idx 21567 (Ankle boot) seed 1: MSE 0.0000  SSIM 1.000  label OK  4.9s
+[20/20] idx 21567 (Ankle boot) seed 2: MSE 0.0000  SSIM 1.000  label OK  14.3s
+
+=== Summary ===
+{
+  "n_trials": 60,
+  "n_images": 20,
+  "n_diverged": 0,
+  "mse": {
+    "mean": 0.19621074482770695,
+    "std": 0.20624697073395867,
+    "median": 1.6655390311370866e-07
+  },
+  "psnr": {
+    "mean": 40.11424456483563,
+    "std": 35.38133173130399,
+    "median": 67.8779661370833
+  },
+  "ssim": {
+    "mean": 0.531062834065718,
+    "std": 0.4892574148977225,
+    "median": 0.9999017119407654
+  },
+  "runtime_s": {
+    "mean": 8.597780664761862,
+    "std": 10.937048479825819,
+    "median": 5.018954753875732
+  },
+  "label_accuracy": 0.6833333333333333,
+  "success_threshold_mse": 0.01,
+  "success_rate_per_trial": 0.5166666666666667,
+  "success_rate_best_of_seeds": 0.9,
+  "median_iters_to_converge": 10,
+  "n_converged": 31,
+  "dataset": "fmnist",
+  "model": "lenet",
+  "init": "official",
+  "iters": 300,
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "image_shape": [
+    1,
+    28,
+    28
+  ],
+  "device": "cpu"
+}
+
+Saved to results/fmnist/
+BERT-tiny, 509,882 shared params, 3 sentences x 3 seeds, device cpu
+
+[1/3] seed 0: token acc 0%  edit 1.00  25s
+   orig: the conference brings together researchers working on machine learning and neural computation.
+   rec:  entry [PAD] [PAD] [PAD] [PAD]grate [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD]
+[1/3] seed 1: token acc 0%  edit 1.00  42s
+   orig: the conference brings together researchers working on machine learning and neural computation.
+   rec:  ##ain [PAD] [PAD] [unused3] [unused4] spitfire 都 [unused4] [unused11] [unused9] [unused43] [unused34] [PAD]
+[1/3] seed 2: token acc 0%  edit 1.00  38s
+   orig: the conference brings together researchers working on machine learning and neural computation.
+   rec:  defined [unused15] λ [unused4] [PAD]how [PAD] [unused62] [PAD] [unused2] [unused11] [unused4] [UNK]
+[2/3] seed 0: token acc 0%  edit 1.00  8s
+   orig: participants keep their training data on local devices and only share model updates.
+   rec:  [PAD]ship [PAD] [PAD] [PAD] [unused900] [PAD] [PAD] [PAD] [PAD] [unused46] [PAD] [unused108] lilly
+[2/3] seed 1: token acc 0%  edit 1.00  31s
+   orig: participants keep their training data on local devices and only share model updates.
+   rec:  [unused194] knoxville [unused2] [unused800] [unused575] [unused421] crowd [unused28] [unused289] model participants updates [unused62] 東
+[2/3] seed 2: token acc 0%  edit 1.00  31s
+   orig: participants keep their training data on local devices and only share model updates.
+   rec:  [PAD] shop [unused289] [PAD] [PAD] local [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] theological thirteenth
+[3/3] seed 0: token acc 0%  edit 1.00  8s
+   orig: gradients computed from private examples may reveal the examples themselves.
+   rec:  [PAD] [PAD] [PAD] chow [PAD] treasure [PAD] [PAD] [PAD] [PAD] [PAD] [PAD]
+[3/3] seed 1: token acc 0%  edit 1.00  25s
+   orig: gradients computed from private examples may reveal the examples themselves.
+   rec:  [unused8] [PAD] [unused11] [unused733]. may [unused8] [PAD] [unused4] [unused26] [PAD]ses
+[3/3] seed 2: token acc 0%  edit 1.00  42s
+   orig: gradients computed from private examples may reveal the examples themselves.
+   rec:  [PAD] [PAD] [PAD] genera [PAD]gut [PAD] [PAD] [PAD] [PAD] [PAD] [PAD]
+
+{
+  "type": "text",
+  "run": "text_builtin_tiny",
+  "model": "bert-tiny",
+  "pretrained": false,
+  "label_mode": "all",
+  "iters": 100,
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "n_sentences": 3,
+  "n_trials": 9,
+  "input_token_acc": 0.0,
+  "label_token_acc": 0.0,
+  "recovered_token_acc": 0.0,
+  "norm_edit_distance": 1.0,
+  "exact_match_rate": 0,
+  "runtime_s": 27.746628469891018,
+  "n_diverged": 0
+}
+Saved to results/text_builtin_tiny/ (progress.txt shows text over iterations)
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Traceback (most recent call last):
+  File "/workspaces/APP-DS---Deep-Leakage-Grads/dlg_text.py", line 276, in <module>
+    main()
+    ~~~~^^
+  File "/workspaces/APP-DS---Deep-Leakage-Grads/dlg_text.py", line 228, in main
+    sentences = load_sentences(args)
+  File "/workspaces/APP-DS---Deep-Leakage-Grads/dlg_text.py", line 73, in load_sentences
+    ds = load_dataset("wikitext", "wikitext-2-raw-v1", split="test")
+  File "/workspaces/APP-DS---Deep-Leakage-Grads/DS/lib/python3.14/site-packages/datasets/load.py", line 1667, in load_dataset
+    builder_instance = load_dataset_builder(
+        path=path,
+    ...<10 lines>...
+        **config_kwargs,
+    )
+  File "/workspaces/APP-DS---Deep-Leakage-Grads/DS/lib/python3.14/site-packages/datasets/load.py", line 1290, in load_dataset_builder
+    dataset_module = dataset_module_factory(
+        path,
+    ...<5 lines>...
+        cache_dir=cache_dir,
+    )
+  File "/workspaces/APP-DS---Deep-Leakage-Grads/DS/lib/python3.14/site-packages/datasets/load.py", line 1182, in dataset_module_factory
+    raise e1 from None
+  File "/workspaces/APP-DS---Deep-Leakage-Grads/DS/lib/python3.14/site-packages/datasets/load.py", line 1157, in dataset_module_factory
+    ).get_module()
+      ~~~~~~~~~~^^
+  File "/workspaces/APP-DS---Deep-Leakage-Grads/DS/lib/python3.14/site-packages/datasets/load.py", line 600, in get_module
+    standalone_yaml_path = cached_path(
+        hf_dataset_url(self.name, config.REPOYAML_FILENAME, revision=self.commit_hash),
+        download_config=download_config,
+    )
+  File "/workspaces/APP-DS---Deep-Leakage-Grads/DS/lib/python3.14/site-packages/datasets/utils/file_utils.py", line 175, in cached_path
+    ).resolve_path(url_or_filename)
+      ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/workspaces/APP-DS---Deep-Leakage-Grads/DS/lib/python3.14/site-packages/huggingface_hub/hf_file_system.py", line 307, in resolve_path
+    parsed = parse_hf_uri(f"{constants.HF_PROTOCOL}{path}")
+  File "/workspaces/APP-DS---Deep-Leakage-Grads/DS/lib/python3.14/site-packages/huggingface_hub/utils/_hf_uris.py", line 319, in parse_hf_uri
+    return _parse_repo_body(location, type_, raw=raw)
+  File "/workspaces/APP-DS---Deep-Leakage-Grads/DS/lib/python3.14/site-packages/huggingface_hub/utils/_hf_uris.py", line 617, in _parse_repo_body
+    raise HfUriError(uri=raw, msg=f"Repository id must be 'namespace/name', got '{repo_id}'.")
+huggingface_hub.errors.HfUriError: Invalid HF URI 'hf://datasets/wikitext@b08601e04326c79dfdd32d625aee71d232d685c3/.huggingface.yaml'. Repository id must be 'namespace/name', got 'wikitext'.
