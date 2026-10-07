@@ -1,0 +1,169 @@
+nohup: ignoring input
+Dataset cifar100: 50000 images, 100 classes, 3x32x32 | model lenet | device cpu
+4 images x 1 seeds = 4 trials, 300 iterations each
+
+[1/4] idx    25 (table) seed -1: MSE 0.3725  SSIM 0.028  label X  1.8s
+[2/4] idx    30 (bicycle) seed -1: MSE 0.0000  SSIM 1.000  label OK  19.1s
+[3/4] idx    40 (snake) seed -1: MSE 0.0001  SSIM 0.999  label OK  26.6s
+[4/4] idx    60 (hamster) seed -1: MSE 0.0000  SSIM 0.999  label OK  18.5s
+
+=== Summary ===
+{
+  "n_trials": 4,
+  "n_images": 4,
+  "n_diverged": 0,
+  "mse": {
+    "mean": 0.09314147753349289,
+    "std": 0.186208147180977,
+    "median": 5.508764115802478e-05
+  },
+  "psnr": {
+    "mean": 38.15003945072166,
+    "std": 23.66747347979326,
+    "median": 45.709200405159585
+  },
+  "ssim": {
+    "mean": 0.7566129830665886,
+    "std": 0.48592656494376507,
+    "median": 0.9993979632854462
+  },
+  "runtime_s": {
+    "mean": 16.50059586763382,
+    "std": 10.487551878922226,
+    "median": 18.810502886772156
+  },
+  "label_accuracy": 0.75,
+  "success_threshold_mse": 0.01,
+  "success_rate_per_trial": 0.75,
+  "success_rate_best_of_seeds": 0.75,
+  "median_iters_to_converge": 60,
+  "n_converged": 3,
+  "dataset": "cifar100",
+  "model": "lenet",
+  "init": "official",
+  "iters": 300,
+  "seeds": [
+    -1
+  ],
+  "image_shape": [
+    3,
+    32,
+    32
+  ],
+  "device": "cpu"
+}
+
+Saved to results/cifar100_official/
+Dataset cifar100: 50000 images, 100 classes, 3x32x32 | model lenet | device cpu
+20 images x 3 seeds = 60 trials, 300 iterations each
+
+[1/20] idx  4480 (apple) seed 0: MSE 0.0000  SSIM 1.000  label OK  19.7s
+[1/20] idx  4480 (apple) seed 1: MSE 0.0000  SSIM 1.000  label OK  17.6s
+[1/20] idx  4480 (apple) seed 2: MSE 0.3698  SSIM 0.045  label OK  2.2s
+[2/20] idx 17849 (aquarium_fish) seed 0: MSE 0.3138  SSIM 0.052  label OK  34.8s
+[2/20] idx 17849 (aquarium_fish) seed 1: MSE 0.0000  SSIM 1.000  label OK  17.4s
+[2/20] idx 17849 (aquarium_fish) seed 2: MSE 0.0000  SSIM 1.000  label OK  16.7s
+[3/20] idx 47462 (baby) seed 0: MSE 0.0000  SSIM 1.000  label OK  17.6s
+[3/20] idx 47462 (baby) seed 1: MSE 0.0000  SSIM 1.000  label OK  18.2s
+[3/20] idx 47462 (baby) seed 2: MSE 0.0000  SSIM 1.000  label OK  17.6s
+[4/20] idx 49091 (bear) seed 0: MSE 0.1752  SSIM 0.260  label OK  34.4s
+[4/20] idx 49091 (bear) seed 1: MSE 0.0000  SSIM 1.000  label OK  24.1s
+[4/20] idx 49091 (bear) seed 2: MSE 0.3310  SSIM 0.077  label OK  2.2s
+[5/20] idx 40230 (beaver) seed 0: MSE 0.0002  SSIM 0.999  label OK  23.8s
+[5/20] idx 40230 (beaver) seed 1: MSE 0.0001  SSIM 0.999  label OK  24.4s
+[5/20] idx 40230 (beaver) seed 2: MSE 0.3415  SSIM 0.110  label OK  35.2s
+[6/20] idx 36044 (bed) seed 0: MSE 0.0000  SSIM 0.999  label OK  19.7s
+[6/20] idx 36044 (bed) seed 1: MSE 0.0000  SSIM 0.999  label OK  19.1s
+[6/20] idx 36044 (bed) seed 2: MSE 0.0000  SSIM 0.999  label OK  19.2s
+[7/20] idx 48404 (bee) seed 0: MSE 0.0000  SSIM 1.000  label OK  18.7s
+[7/20] idx 48404 (bee) seed 1: MSE 0.2987  SSIM 0.087  label X  2.3s
+[7/20] idx 48404 (bee) seed 2: MSE 0.0000  SSIM 1.000  label OK  18.5s
+[8/20] idx 39511 (beetle) seed 0: MSE 0.0000  SSIM 1.000  label OK  20.5s
+[8/20] idx 39511 (beetle) seed 1: MSE 0.0000  SSIM 1.000  label OK  22.6s
+[8/20] idx 39511 (beetle) seed 2: MSE 0.0001  SSIM 1.000  label OK  21.0s
+[9/20] idx 11751 (bicycle) seed 0: MSE 0.0000  SSIM 1.000  label OK  18.4s
+[9/20] idx 11751 (bicycle) seed 1: MSE 0.0000  SSIM 1.000  label OK  18.7s
+[9/20] idx 11751 (bicycle) seed 2: MSE 0.0000  SSIM 1.000  label OK  18.1s
+[10/20] idx 28874 (bottle) seed 0: MSE 0.0000  SSIM 0.999  label OK  23.5s
+[10/20] idx 28874 (bottle) seed 1: MSE 0.0000  SSIM 0.999  label OK  21.3s
+[10/20] idx 28874 (bottle) seed 2: MSE 0.0000  SSIM 0.999  label OK  20.1s
+[11/20] idx 17323 (bowl) seed 0: MSE 0.0001  SSIM 0.998  label OK  27.8s
+[11/20] idx 17323 (bowl) seed 1: MSE 0.0001  SSIM 0.997  label OK  26.2s
+[11/20] idx 17323 (bowl) seed 2: MSE 0.4293  SSIM 0.081  label X  2.9s
+[12/20] idx 15769 (boy) seed 0: MSE 0.0000  SSIM 0.998  label OK  17.8s
+[12/20] idx 15769 (boy) seed 1: MSE 0.0000  SSIM 0.999  label OK  19.6s
+[12/20] idx 15769 (boy) seed 2: MSE 0.0000  SSIM 0.998  label OK  19.8s
+[13/20] idx  4115 (bridge) seed 0: MSE 0.2876  SSIM 0.089  label X  1.9s
+[13/20] idx  4115 (bridge) seed 1: MSE 0.0000  SSIM 0.997  label OK  22.6s
+[13/20] idx  4115 (bridge) seed 2: MSE 0.0000  SSIM 0.995  label OK  22.6s
+[14/20] idx 49162 (bus) seed 0: MSE 0.0000  SSIM 1.000  label OK  24.4s
+[14/20] idx 49162 (bus) seed 1: MSE 0.0000  SSIM 1.000  label OK  22.9s
+[14/20] idx 49162 (bus) seed 2: MSE 0.0000  SSIM 1.000  label OK  22.3s
+[15/20] idx  1836 (butterfly) seed 0: MSE 0.0000  SSIM 0.999  label OK  17.8s
+[15/20] idx  1836 (butterfly) seed 1: MSE 0.3689  SSIM 0.020  label X  1.8s
+[15/20] idx  1836 (butterfly) seed 2: MSE 0.0000  SSIM 1.000  label OK  18.6s
+[16/20] idx  1271 (camel) seed 0: MSE 0.2670  SSIM 0.153  label OK  34.8s
+[16/20] idx  1271 (camel) seed 1: MSE 0.0001  SSIM 0.998  label OK  25.9s
+[16/20] idx  1271 (camel) seed 2: MSE 0.0001  SSIM 0.997  label OK  26.2s
+[17/20] idx 36935 (can) seed 0: MSE 0.0000  SSIM 1.000  label OK  32.8s
+[17/20] idx 36935 (can) seed 1: MSE 0.0000  SSIM 1.000  label OK  22.1s
+[17/20] idx 36935 (can) seed 2: MSE 0.0000  SSIM 1.000  label OK  20.2s
+[18/20] idx  1985 (castle) seed 0: MSE 0.0001  SSIM 0.996  label OK  25.1s
+[18/20] idx  1985 (castle) seed 1: MSE 0.0001  SSIM 0.996  label OK  29.3s
+[18/20] idx  1985 (castle) seed 2: MSE 0.0001  SSIM 0.996  label OK  27.9s
+[19/20] idx   440 (caterpillar) seed 0: MSE 0.0000  SSIM 1.000  label OK  19.4s
+[19/20] idx   440 (caterpillar) seed 1: MSE 0.3331  SSIM 0.035  label X  47.8s
+[19/20] idx   440 (caterpillar) seed 2: MSE 0.0000  SSIM 1.000  label OK  17.6s
+[20/20] idx 29780 (cattle) seed 0: MSE 0.0000  SSIM 0.999  label OK  22.9s
+[20/20] idx 29780 (cattle) seed 1: MSE 0.0000  SSIM 0.999  label OK  24.3s
+[20/20] idx 29780 (cattle) seed 2: MSE 0.0001  SSIM 0.999  label OK  21.5s
+
+=== Summary ===
+{
+  "n_trials": 60,
+  "n_images": 20,
+  "n_diverged": 0,
+  "mse": {
+    "mean": 0.05862687943545476,
+    "std": 0.1275852385026665,
+    "median": 2.6434482606418896e-05
+  },
+  "psnr": {
+    "mean": 39.824784987905275,
+    "std": 17.38967003935447,
+    "median": 45.780255631603865
+  },
+  "ssim": {
+    "mean": 0.8326387165735165,
+    "std": 0.35509459732374854,
+    "median": 0.9993053376674652
+  },
+  "runtime_s": {
+    "mean": 20.91034571727117,
+    "std": 8.468540633775609,
+    "median": 20.334322333335876
+  },
+  "label_accuracy": 0.9166666666666666,
+  "success_threshold_mse": 0.01,
+  "success_rate_per_trial": 0.8166666666666667,
+  "success_rate_best_of_seeds": 1.0,
+  "median_iters_to_converge": 60,
+  "n_converged": 49,
+  "dataset": "cifar100",
+  "model": "lenet",
+  "init": "official",
+  "iters": 300,
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "image_shape": [
+    3,
+    32,
+    32
+  ],
+  "device": "cpu"
+}
+
+Saved to results/cifar100/
