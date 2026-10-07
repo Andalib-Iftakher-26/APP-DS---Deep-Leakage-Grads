@@ -1,0 +1,391 @@
+nohup: ignoring input
+== ResNet-20, variants A and C, 4 images x 300 iters ==
+Dataset cifar100: 50000 images, 100 classes, 3x32x32 | model resnet20 | device cpu
+4 images x 1 seeds = 4 trials, 300 iterations each
+
+[1/4] idx  4480 (apple) seed 0: MSE 0.2073  SSIM 0.056  label OK  596.3s
+[2/4] idx 17849 (aquarium_fish) seed 0: MSE 0.2094  SSIM 0.058  label OK  609.4s
+[3/4] idx 47462 (baby) seed 0: MSE 0.0500  SSIM 0.164  label OK  610.0s
+[4/4] idx 49091 (bear) seed 0: MSE 0.3264  SSIM 0.095  label X  580.4s
+
+=== Summary ===
+{
+  "n_trials": 4,
+  "n_images": 4,
+  "n_diverged": 0,
+  "mse": {
+    "mean": 0.19826634973287582,
+    "std": 0.11344873277175496,
+    "median": 0.20835236459970474
+  },
+  "psnr": {
+    "mean": 7.87486530929285,
+    "std": 3.546372151619214,
+    "median": 6.812075206896081
+  },
+  "ssim": {
+    "mean": 0.0931700598448515,
+    "std": 0.050692123377572715,
+    "median": 0.07627383060753345
+  },
+  "runtime_s": {
+    "mean": 599.0228645205498,
+    "std": 13.950182446501074,
+    "median": 602.872544169426
+  },
+  "label_accuracy": 0.75,
+  "success_threshold_mse": 0.01,
+  "success_rate_per_trial": 0.0,
+  "success_rate_best_of_seeds": 0.0,
+  "median_iters_to_converge": 0,
+  "n_converged": 3,
+  "resnet_bn": false,
+  "resnet_head": "gap",
+  "resnet_skip": "post",
+  "lbfgs_tolerances": false,
+  "dataset": "cifar100",
+  "model": "resnet20",
+  "init": "official",
+  "iters": 300,
+  "seeds": [
+    0
+  ],
+  "image_shape": [
+    3,
+    32,
+    32
+  ],
+  "device": "cpu"
+}
+
+Saved to results/resnet_20/cifar100_resnet20_A_post/
+Dataset cifar100: 50000 images, 100 classes, 3x32x32 | model resnet20 | device cpu
+4 images x 1 seeds = 4 trials, 300 iterations each
+
+[1/4] idx  4480 (apple) seed 0: MSE 0.2150  SSIM 0.056  label OK  585.7s
+[2/4] idx 17849 (aquarium_fish) seed 0: MSE 0.1932  SSIM 0.052  label OK  584.8s
+[3/4] idx 47462 (baby) seed 0: MSE 0.2012  SSIM 0.046  label OK  588.7s
+[4/4] idx 49091 (bear) seed 0: MSE 0.1659  SSIM 0.142  label OK  575.1s
+
+=== Summary ===
+{
+  "n_trials": 4,
+  "n_images": 4,
+  "n_diverged": 0,
+  "mse": {
+    "mean": 0.19383997470140457,
+    "std": 0.020649122844574465,
+    "median": 0.19722812622785568
+  },
+  "psnr": {
+    "mean": 7.1448057008658505,
+    "std": 0.4768582714407126,
+    "median": 7.051207143628904
+  },
+  "ssim": {
+    "mean": 0.07400312926620245,
+    "std": 0.04560074958888326,
+    "median": 0.05382091365754604
+  },
+  "runtime_s": {
+    "mean": 583.5844798088074,
+    "std": 5.892936990827084,
+    "median": 585.2526092529297
+  },
+  "label_accuracy": 1.0,
+  "success_threshold_mse": 0.01,
+  "success_rate_per_trial": 0.0,
+  "success_rate_best_of_seeds": 0.0,
+  "median_iters_to_converge": 65.0,
+  "n_converged": 2,
+  "resnet_bn": false,
+  "resnet_head": "gap",
+  "resnet_skip": "identity",
+  "lbfgs_tolerances": false,
+  "dataset": "cifar100",
+  "model": "resnet20",
+  "init": "default",
+  "iters": 300,
+  "seeds": [
+    0
+  ],
+  "image_shape": [
+    3,
+    32,
+    32
+  ],
+  "device": "cpu"
+}
+
+Saved to results/resnet_20/cifar100_resnet20_C_identity/
+Dataset cifar10: 50000 images, 10 classes, 3x32x32 | model resnet20 | device cpu
+4 images x 1 seeds = 4 trials, 300 iterations each
+
+[1/4] idx 24681 (airplane) seed 0: MSE 0.0746  SSIM 0.220  label OK  584.4s
+[2/4] idx  8628 (automobile) seed 0: MSE 0.2190  SSIM 0.056  label OK  584.5s
+[3/4] idx 36293 (bird) seed 0: MSE 0.4255  SSIM 0.064  label OK  576.5s
+[4/4] idx 16904 (cat) seed 0: MSE 0.2044  SSIM 0.078  label OK  571.4s
+
+=== Summary ===
+{
+  "n_trials": 4,
+  "n_images": 4,
+  "n_diverged": 0,
+  "mse": {
+    "mean": 0.23088586702942848,
+    "std": 0.14509258545687764,
+    "median": 0.211734838783741
+  },
+  "psnr": {
+    "mean": 7.1187418935052555,
+    "std": 3.1203958489186654,
+    "median": 6.744654893366556
+  },
+  "ssim": {
+    "mean": 0.10439009126275778,
+    "std": 0.0778683778503439,
+    "median": 0.07080669701099396
+  },
+  "runtime_s": {
+    "mean": 579.2132569551468,
+    "std": 6.411123417548036,
+    "median": 580.4604104757309
+  },
+  "label_accuracy": 1.0,
+  "success_threshold_mse": 0.01,
+  "success_rate_per_trial": 0.0,
+  "success_rate_best_of_seeds": 0.0,
+  "median_iters_to_converge": 0.0,
+  "n_converged": 4,
+  "resnet_bn": false,
+  "resnet_head": "gap",
+  "resnet_skip": "post",
+  "lbfgs_tolerances": false,
+  "dataset": "cifar10",
+  "model": "resnet20",
+  "init": "official",
+  "iters": 300,
+  "seeds": [
+    0
+  ],
+  "image_shape": [
+    3,
+    32,
+    32
+  ],
+  "device": "cpu"
+}
+
+Saved to results/resnet_20/cifar10_resnet20_A_post/
+Dataset cifar10: 50000 images, 10 classes, 3x32x32 | model resnet20 | device cpu
+4 images x 1 seeds = 4 trials, 300 iterations each
+
+[1/4] idx 24681 (airplane) seed 0: MSE 0.0737  SSIM 0.175  label OK  571.4s
+[2/4] idx  8628 (automobile) seed 0: MSE 0.2123  SSIM 0.037  label OK  561.1s
+[3/4] idx 36293 (bird) seed 0: MSE 0.4138  SSIM 0.069  label OK  562.0s
+[4/4] idx 16904 (cat) seed 0: MSE 0.2052  SSIM 0.079  label OK  564.1s
+
+=== Summary ===
+{
+  "n_trials": 4,
+  "n_images": 4,
+  "n_diverged": 0,
+  "mse": {
+    "mean": 0.22623755782842636,
+    "std": 0.14031378305995867,
+    "median": 0.20874100923538208
+  },
+  "psnr": {
+    "mean": 7.191549836583155,
+    "std": 3.091633973836825,
+    "median": 6.80456358420695
+  },
+  "ssim": {
+    "mean": 0.08982841670513153,
+    "std": 0.059257896697303816,
+    "median": 0.07370449230074883
+  },
+  "runtime_s": {
+    "mean": 564.6395837664604,
+    "std": 4.649179525384523,
+    "median": 563.0475525856018
+  },
+  "label_accuracy": 1.0,
+  "success_threshold_mse": 0.01,
+  "success_rate_per_trial": 0.0,
+  "success_rate_best_of_seeds": 0.0,
+  "median_iters_to_converge": 0,
+  "n_converged": 1,
+  "resnet_bn": false,
+  "resnet_head": "gap",
+  "resnet_skip": "identity",
+  "lbfgs_tolerances": false,
+  "dataset": "cifar10",
+  "model": "resnet20",
+  "init": "default",
+  "iters": 300,
+  "seeds": [
+    0
+  ],
+  "image_shape": [
+    3,
+    32,
+    32
+  ],
+  "device": "cpu"
+}
+
+Saved to results/resnet_20/cifar10_resnet20_C_identity/
+== ResNet-56, variant A, 4 image(s) x 300 iters ==
+Dataset cifar100: 50000 images, 100 classes, 3x32x32 | model resnet56 | device cpu
+4 images x 1 seeds = 4 trials, 300 iterations each
+
+[1/4] idx  4480 (apple) seed 0: MSE 0.2073  SSIM 0.055  label OK  1800.0s
+[2/4] idx 17849 (aquarium_fish) seed 0: MSE 0.1881  SSIM 0.052  label OK  1792.9s
+[3/4] idx 47462 (baby) seed 0: MSE 0.1925  SSIM 0.045  label OK  1803.8s
+[4/4] idx 49091 (bear) seed 0: MSE 0.2682  SSIM 0.063  label OK  1689.5s
+
+=== Summary ===
+{
+  "n_trials": 4,
+  "n_images": 4,
+  "n_diverged": 0,
+  "mse": {
+    "mean": 0.21400484815239906,
+    "std": 0.03702699770159237,
+    "median": 0.19988799095153809
+  },
+  "psnr": {
+    "mean": 6.740696331757272,
+    "std": 0.7064446154387105,
+    "median": 6.995109402645298
+  },
+  "ssim": {
+    "mean": 0.053998980671167374,
+    "std": 0.007457465908481285,
+    "median": 0.053898921236395836
+  },
+  "runtime_s": {
+    "mean": 1771.5344125628471,
+    "std": 54.88865357158939,
+    "median": 1796.4372267723083
+  },
+  "label_accuracy": 1.0,
+  "success_threshold_mse": 0.01,
+  "success_rate_per_trial": 0.0,
+  "success_rate_best_of_seeds": 0.0,
+  "median_iters_to_converge": 0.0,
+  "n_converged": 4,
+  "resnet_bn": false,
+  "resnet_head": "gap",
+  "resnet_skip": "post",
+  "lbfgs_tolerances": false,
+  "dataset": "cifar100",
+  "model": "resnet56",
+  "init": "official",
+  "iters": 300,
+  "seeds": [
+    0
+  ],
+  "image_shape": [
+    3,
+    32,
+    32
+  ],
+  "device": "cpu"
+}
+
+Saved to results/resnet_56/cifar100_resnet56_A_post/
+Dataset cifar10: 50000 images, 10 classes, 3x32x32 | model resnet56 | device cpu
+4 images x 1 seeds = 4 trials, 300 iterations each
+
+[1/4] idx 24681 (airplane) seed 0: MSE 0.1840  SSIM 0.079  label OK  1611.4s
+[2/4] idx  8628 (automobile) seed 0: MSE 0.2106  SSIM 0.037  label OK  1624.4s
+[3/4] idx 36293 (bird) seed 0: MSE 0.4259  SSIM 0.064  label OK  1617.3s
+[4/4] idx 16904 (cat) seed 0: MSE 0.2044  SSIM 0.078  label OK  1619.7s
+
+=== Summary ===
+{
+  "n_trials": 4,
+  "n_images": 4,
+  "n_diverged": 0,
+  "mse": {
+    "mean": 0.2562318705022335,
+    "std": 0.1137060530455601,
+    "median": 0.20748864859342575
+  },
+  "psnr": {
+    "mean": 6.1797886874493315,
+    "std": 1.6678654650467133,
+    "median": 6.830533363070263
+  },
+  "ssim": {
+    "mean": 0.06450830213725567,
+    "std": 0.019614573841527996,
+    "median": 0.0707872174680233
+  },
+  "runtime_s": {
+    "mean": 1618.2006511688232,
+    "std": 5.395562395862944,
+    "median": 1618.5154972076416
+  },
+  "label_accuracy": 1.0,
+  "success_threshold_mse": 0.01,
+  "success_rate_per_trial": 0.0,
+  "success_rate_best_of_seeds": 0.0,
+  "median_iters_to_converge": 0.0,
+  "n_converged": 4,
+  "resnet_bn": false,
+  "resnet_head": "gap",
+  "resnet_skip": "post",
+  "lbfgs_tolerances": false,
+  "dataset": "cifar10",
+  "model": "resnet56",
+  "init": "official",
+  "iters": 300,
+  "seeds": [
+    0
+  ],
+  "image_shape": [
+    3,
+    32,
+    32
+  ],
+  "device": "cpu"
+}
+
+Saved to results/resnet_56/cifar10_resnet56_A_post/
+== ResNet-20 batched (paper Table 1), batch sizes 1 and 2 ==
+Batched DLG | cifar100 | resnet20 | device cpu | batch sizes [1, 2] x 1 batches x 1 seeds | max 300 iters
+
+bs 1 batch 0 seed 0: converged at 10  MSE 0.2067  SSIM 0.056  label acc 100%  21s
+bs 2 batch 0 seed 0: converged at -  MSE 0.2889  SSIM 0.038  label acc 50%  969s
+
+| batch size | converged | median iters to converge | MSE | SSIM | label acc | success |
+|---|---|---|---|---|---|---|
+| 1 | 1/1 | 10 | 0.2067 | 0.056 | 100% | 0% |
+| 2 | 0/1 | - | 0.2889 | 0.038 | 50% | 0% |
+
+Saved to results/resnet_20/cifar100_resnet20_batch_A_post/
+== Summary ==
+Batched DLG runs (paper Table 1):
+| run | batch size | converged | median iters to converge | MSE | SSIM | label acc |
+|---|---|---|---|---|---|---|
+| cifar100_resnet20_batch_A_post | 1 | 1/1 | 10 | 0.2067 | 0.056 | 100% |
+| cifar100_resnet20_batch_A_post | 2 | 0/1 | - | 0.2889 | 0.038 | 50% |
+
+| run | model | trials | paper MSE | MSE mean | MSE median | SSIM | PSNR (dB) | label acc | success/trial | success best-of-seeds | median iters to converge | runtime/trial (s) |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| cifar100_resnet20_A_post | resnet20 | 4 | 0.0069 | 0.1983 | 0.2084 | 0.093 | 7.9 | 75% | 0% | 0% | 0 | 599.0 |
+| cifar100_resnet20_C_identity | resnet20 | 4 | 0.0069 | 0.1938 | 0.1972 | 0.074 | 7.1 | 100% | 0% | 0% | 65.0 | 583.6 |
+| cifar10_resnet20_A_post | resnet20 | 4 | - | 0.2309 | 0.2117 | 0.104 | 7.1 | 100% | 0% | 0% | 0.0 | 579.2 |
+| cifar10_resnet20_C_identity | resnet20 | 4 | - | 0.2262 | 0.2087 | 0.090 | 7.2 | 100% | 0% | 0% | 0 | 564.6 |
+
+Saved results/resnet_20/comparison.csv and comparison.png
+| run | model | trials | paper MSE | MSE mean | MSE median | SSIM | PSNR (dB) | label acc | success/trial | success best-of-seeds | median iters to converge | runtime/trial (s) |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| cifar100_resnet56_A_post | resnet56 | 4 | 0.0069 | 0.2140 | 0.1999 | 0.054 | 6.7 | 100% | 0% | 0% | 0.0 | 1771.5 |
+| cifar10_resnet56_A_post | resnet56 | 4 | - | 0.2562 | 0.2075 | 0.065 | 6.2 | 100% | 0% | 0% | 0.0 | 1618.2 |
+
+Saved results/resnet_56/comparison.csv and comparison.png
+== Done ==
