@@ -108,6 +108,7 @@ def main():
     ap.add_argument("--root", default="smartphone")
     ap.add_argument("--sizes", type=int, nargs="+", default=[32, 64])
     ap.add_argument("--target-per-class", type=int, default=30)
+    ap.add_argument("--name", default="Smartphone Natural Objects", help="dataset name for the report")
     args = ap.parse_args()
 
     raw_dir = os.path.join(args.root, "raw")
@@ -189,9 +190,10 @@ def main():
     # Report
     included = [r for r in meta.values() if r.get("include", "yes").strip().lower() not in ("no", "n", "0", "false")]
     counts = Counter(r["class"] for r in included)
-    report = ["Smartphone Natural Objects dataset - status", ""]
+    report = [f"{args.name} dataset - status", ""]
     report.append(f"{'class':<10} {'images':>6} / target {args.target_per_class}")
-    for c in sorted(set(CLASSES) | set(counts)):
+    present = sorted(c for c in os.listdir(raw_dir) if os.path.isdir(os.path.join(raw_dir, c)))
+    for c in sorted(set(present or CLASSES) | set(counts)):
         bar = "#" * min(counts[c], 40)
         report.append(f"{c:<10} {counts[c]:>6}   {bar}")
     report.append("")
