@@ -1,14 +1,19 @@
-Smartphone Objects dataset - status
+Smartphone Natural Objects dataset - status
 
 class      images / target 30
 bag            24   ########################
 bottle         30   ##############################
+chair          30   ##############################
+container_bottle     17   #################
+fruit          34   ##################################
+key            30   ##############################
 mouse          30   ##############################
 mug            30   ##############################
 pen            29   #############################
+watches        31   ###############################
 
-Total included: 143 (excluded on inspection: 0)
-Originals that contained GPS: 143 - all stripped. Processed files with metadata: 0
-setting    : indoor 83, outdoor 60
-lighting   : (not set) 143
-background : (not set) 143
+Total included: 285 (excluded on inspection: 0)
+Originals that contained GPS: 285 - all stripped. Processed files with metadata: 0
+setting    : indoor 168, outdoor 117
+lighting   : (not set) 285
+background : (not set) 285
