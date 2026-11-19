@@ -34,7 +34,6 @@ results/
 # Private smartphone source data and derived image files
 raw/
 smartphone/raw/
-smartphone/processed/
 smartphone/metadata.csv
 smartphone/status.txt
 smartphone/contact_sheet_*.png
