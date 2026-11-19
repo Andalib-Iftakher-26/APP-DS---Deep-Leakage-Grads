@@ -140,7 +140,9 @@ dlg_text.py implements an experimental masked-language-model variant. It is not 
 
 Generated experiment outputs are written to results/. This directory is ignored by Git so that large, machine-specific outputs are not accidentally committed. At the time of this repository cleanup, the public repository does **not** include the historical CSV/JSON result archive. The reported experiment scope and the evidence that is or is not available are described in [docs/EXPERIMENT_STATUS.md](docs/EXPERIMENT_STATUS.md).
 
-The smartphone raw photos, processed images, and metadata CSV are also excluded from Git. Processed images are re-encoded without EXIF metadata, but the original local photographs remain unchanged. Review the actual images for faces, addresses, documents, screens, or other identifying content before sharing any sample publicly.
+The smartphone raw photos, processed images, and metadata CSV are excluded from the **current branch snapshot**. Processed images are re-encoded without EXIF metadata, but the original local photographs remain unchanged. Review the actual images for faces, addresses, documents, screens, or other identifying content before sharing any sample publicly.
+
+**Important Git-history warning:** earlier public commits in this repository contain the original smartphone photographs and a metadata CSV. The historical CSV marks all 285 source images as having GPS metadata. Those files are absent from the latest tree but remain accessible through older Git commits unless repository history is rewritten. Do not assume that deleting a file from the latest commit removes it from a public repository's history. See the privacy warning in [docs/EXPERIMENT_STATUS.md](docs/EXPERIMENT_STATUS.md).
 
 ## Reproducibility and limitations
 
