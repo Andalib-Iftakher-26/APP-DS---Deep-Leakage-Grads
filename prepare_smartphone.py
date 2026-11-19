@@ -40,7 +40,7 @@ try:
 except ImportError:
     HEIF_OK = False
 
-CLASSES = ["bottle", "cup", "book", "key", "shoe", "backpack", "plant", "fruit", "chair", "mouse"]
+CLASSES = ["bag", "bottle", "chair", "container_bottle", "fruit", "key", "mouse", "mug", "pen", "watches"]
 EXTS = {".jpg", ".jpeg", ".png", ".heic", ".heif"}
 AUTO_COLS = ["image_id", "class", "source_file", "orig_width", "orig_height", "had_gps",
              "setting", "lighting", "background"]
