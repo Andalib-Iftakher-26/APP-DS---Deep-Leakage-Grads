@@ -98,13 +98,12 @@ The runner prints per-trial progress and writes a CSV, JSON summary, reconstruct
 
 ### Smartphone natural-objects dataset
 
-The original phone photos are **not included** in this repository. Place them locally using the folder structure and privacy guidance in [smartphone/README.md](smartphone/README.md), then preprocess:
+The **processed dataset is already included** in the repository at:
 
-~~~bash
-python prepare_smartphone.py --root smartphone --sizes 32 64 --target-per-class 30
-~~~
+- `smartphone/processed/32/<class>/`: 285 RGB PNG images at 32×32.
+- `smartphone/processed/64/<class>/`: the same 285 images at 64×64.
 
-Run the 32×32 processed images:
+You do **not** need the original phone photographs to run the reported smartphone experiments. Run the existing 32×32 inputs directly:
 
 ~~~bash
 python run_experiments.py \
@@ -115,8 +114,15 @@ python run_experiments.py \
   --iters 300
 ~~~
 
-For the 64×64 set, change the root to smartphone/processed/64. The exact sample selection is determined by the runner's deterministic class-stratified sampler; reproducing a particular historical subset requires recording and reusing its explicit indices.
+For the 64×64 experiment, change the root to `smartphone/processed/64`.
 
+The original camera photos and the full metadata CSV are not included in the current branch snapshot. To repeat preprocessing from your own source photos, place them privately under `smartphone/raw/<class>/` and run:
+
+~~~bash
+python prepare_smartphone.py --root smartphone --sizes 32 64 --target-per-class 30
+~~~
+
+The preparation script regenerates the processed folders and local metadata/contact-sheet files. The original photos are not modified. See [smartphone/README.md](smartphone/README.md) for the expected folder layout and privacy considerations.
 ### ResNet and batch experiments
 
 For ResNet single-image tests, pass --model resnet20 or --model resnet56. The scripts in scripts/ provide longer CPU runs and timing checks. These can be substantially slower than LeNet, especially on CPU.
