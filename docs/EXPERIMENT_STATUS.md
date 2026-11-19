@@ -19,7 +19,7 @@ The pinned package list is in requirements.txt.
 | Experiment | Reported scope | Status / qualification |
 |---|---|---|
 | LeNet single-image experiments on public datasets | MNIST, CIFAR-10, CIFAR-100, SVHN, LFW, and Fashion-MNIST; 20 images per dataset, 3 dummy seeds, 300 outer iterations (60 trials per dataset; 360 total) | Completed and analysed |
-| Smartphone natural-objects preprocessing | 285 source images; processed at 32×32 and 64×64 | Completed; raw images and generated outputs are not included in this public repository |
+| Smartphone natural-objects preprocessing | 285 source images; 285 processed images at 32×32 and 285 at 64×64 | Completed; processed PNG inputs are now included in the current repository; raw originals and full metadata CSV are excluded from the current snapshot |
 | Smartphone DLG | 12 selected images × 3 seeds at each resolution (36 trials at 32×32 and 36 at 64×64) | Completed and analysed |
 | ResNet single-image experiments | 24 trials across six tested configurations (four trials per configuration) | Diagnostic / partial reproduction; no trial met the MSE < 0.01 image-reconstruction success threshold |
 | Batched DLG | One trial each for batch sizes 1 and 2 | Partial; batch sizes 4 and 8 were not completed |
@@ -46,7 +46,7 @@ The local Smartphone Natural Objects collection contained 285 images. The report
 
 The collection was described as 143 images corresponding to paths already represented in the earlier metadata source and 142 additional images. The recorded setting counts were 168 indoor and 117 outdoor. The class counts are not perfectly balanced and some classes are below the original target of 30; this was reported as a scoped-down dataset rather than a completed 1,000-image collection.
 
-Preprocessing generated 285 files at each of 32×32 and 64×64. The processed images were re-encoded without EXIF metadata. The raw source images were kept separately and are not published in this repository.
+Preprocessing generated 285 files at each of 32×32 and 64×64. The processed images were re-encoded without EXIF metadata. The 570 processed PNGs have been restored to the current repository under smartphone/processed/32/ and smartphone/processed/64/. The raw source images and full metadata CSV are not included in the current snapshot.
 
 ## Interpretation and reported findings
 
@@ -62,13 +62,13 @@ At the time of this record:
 
 - The experiment source scripts and launch helpers are committed.
 - The results/ directory is excluded by .gitignore, and the historical CSV/JSON result archive is not present on the public branch.
-- The smartphone raw images, processed image folders, and metadata CSV are not present on the public branch.
+- The current public branch includes 570 processed smartphone PNGs (285 per resolution); the original raw photos and full metadata CSV are not present in the current branch snapshot.
 - The reported LLM-judge pair-level records are not available here.
 
 Consequently, this file is a transparent summary of the reported work, not a substitute for the missing trial-level logs. For full independent verification, the non-sensitive result CSV/JSON files should be exported from the original Codespaces workspace and committed separately after checking them for private paths or image content.
 
 ## Historical dataset privacy warning
 
-Although the current branch tree does not contain the source image folders or smartphone metadata CSV, earlier public commits do contain the original photographs under the repository-level raw/ directory, as well as smartphone/metadata.csv and processed image files. The historical metadata CSV contains 285 records, and its had_gps field is set to 1 for all 285 records. This records GPS metadata presence in the originals; it does not, by itself, disclose coordinate values in the CSV. The original image files may nevertheless retain embedded EXIF data.
+Although the current branch tree does not contain the source image folders or smartphone metadata CSV, earlier public commits do contain the original photographs under the repository-level raw/ directory, as well as smartphone/metadata.csv and the processed image files. The processed PNGs have since been restored to the latest branch as the reproducible input dataset. The historical metadata CSV contains 285 records, and its had_gps field is set to 1 for all 285 records. This records GPS metadata presence in the originals; it does not, by itself, disclose coordinate values in the CSV. The original image files may nevertheless retain embedded EXIF data.
 
-The current .gitignore now excludes the root raw/ folder as well as the smartphone raw and processed folders and metadata. This prevents accidental re-addition in new commits; it does **not** erase earlier commits or copies/clones of the repository. Removing those historical files from the public repository requires rewriting Git history (for example, with git-filter-repo), force-updating the affected branches, and asking collaborators to re-clone or carefully clean existing clones. Review this as a separate, deliberate privacy operation before doing it; rotating any credentials or tokens accidentally exposed in history would also be necessary.
+The current .gitignore excludes the root raw/ folder, smartphone/raw/, the full metadata CSV, and generated status/contact-sheet files. The processed smartphone PNG folders are intentionally tracked in the current branch so the experiments can be rerun. Ignore rules do **not** erase earlier commits or copies/clones of the repository. Removing those historical files from the public repository requires rewriting Git history (for example, with git-filter-repo), force-updating the affected branches, and asking collaborators to re-clone or carefully clean existing clones. Review this as a separate, deliberate privacy operation before doing it; rotating any credentials or tokens accidentally exposed in history would also be necessary.
