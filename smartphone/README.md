@@ -1,6 +1,6 @@
 # Smartphone Natural Objects dataset (local files)
 
-This folder documents the locally collected smartphone dataset used in the reproduction study. The photographs and metadata are deliberately **not committed** to the public repository.
+This folder documents the locally collected smartphone dataset used in the reproduction study. The original photographs and full metadata CSV are deliberately **not committed in the current branch snapshot**. The processed images used by the experiments are included.
 
 ## Expected local layout
 
@@ -41,9 +41,9 @@ python prepare_smartphone.py --root smartphone --sizes 32 64 --target-per-class 
 
 The script creates:
 
-- processed/32/<class>/ and processed/64/<class>/: square-cropped RGB PNGs.
-- metadata.csv: image IDs, source-relative paths, dimensions, whether the source had GPS metadata, capture-condition labels, and manual annotation fields.
-- status.txt and contact-sheet / preprocessing-example images.
+- processed/32/<class>/ and processed/64/<class>/: square-cropped RGB PNGs. The 285 files at each resolution used in the reported experiment are included in this repository.
+- metadata.csv: a local file containing image IDs, source-relative paths, dimensions, whether the source had GPS metadata, capture-condition labels, and manual annotation fields. This full file is not committed.
+- status.txt and contact-sheet / preprocessing-example images. These generated local files are not committed.
 
 The processed PNGs are re-encoded from pixel data after EXIF orientation is applied. They are checked for EXIF metadata. The raw source files are not modified by preprocessing.
 
@@ -53,9 +53,9 @@ The collected version used in the project contained 285 images across the ten cl
 
 ## Privacy and publishing
 
-Do not commit raw/, processed/, or metadata.csv without a deliberate review. The metadata file includes source-relative filenames/paths and a GPS-presence flag; raw photographs may contain identifiable people, home interiors, documents, reflections, or location clues even after EXIF is removed. Check the actual image pixels and filenames before publishing a curated sample.
+Do not commit raw/ or the full metadata.csv. The processed/ folders are tracked because they are the actual experimental inputs; check pixel content before adding any new samples. The metadata file includes source-relative filenames/paths and a GPS-presence flag; raw photographs may contain identifiable people, home interiors, documents, reflections, or location clues even after EXIF is removed. Check the actual image pixels and filenames before publishing a curated sample.
 
-**Historical warning:** previous public commits of this repository contain the original source photos and a metadata CSV. The historical CSV marks all 285 original photos as having GPS metadata. Although these files are not in the current branch snapshot and are now ignored for future commits, deleting them from the latest version does not remove them from Git history. See [docs/EXPERIMENT_STATUS.md](../docs/EXPERIMENT_STATUS.md) before deciding whether to rewrite repository history.
+**Historical warning:** previous public commits of this repository contain the original source photos and a metadata CSV. The historical CSV marks all 285 original photos as having GPS metadata. Although these files are not in the current branch snapshot and are ignored for future commits, deleting them from the latest version does not remove them from Git history. See [docs/EXPERIMENT_STATUS.md](../docs/EXPERIMENT_STATUS.md) before deciding whether to rewrite repository history.
 
 To run the smartphone attack after preprocessing:
 
