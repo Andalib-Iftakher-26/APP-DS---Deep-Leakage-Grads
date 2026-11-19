@@ -66,3 +66,9 @@ At the time of this record:
 - The reported LLM-judge pair-level records are not available here.
 
 Consequently, this file is a transparent summary of the reported work, not a substitute for the missing trial-level logs. For full independent verification, the non-sensitive result CSV/JSON files should be exported from the original Codespaces workspace and committed separately after checking them for private paths or image content.
+
+## Historical dataset privacy warning
+
+Although the current branch tree does not contain the source image folders or smartphone metadata CSV, earlier public commits do contain the original photographs under the repository-level raw/ directory, as well as smartphone/metadata.csv and processed image files. The historical metadata CSV contains 285 records, and its had_gps field is set to 1 for all 285 records. This records GPS metadata presence in the originals; it does not, by itself, disclose coordinate values in the CSV. The original image files may nevertheless retain embedded EXIF data.
+
+The current .gitignore now excludes the root raw/ folder as well as the smartphone raw and processed folders and metadata. This prevents accidental re-addition in new commits; it does **not** erase earlier commits or copies/clones of the repository. Removing those historical files from the public repository requires rewriting Git history (for example, with git-filter-repo), force-updating the affected branches, and asking collaborators to re-clone or carefully clean existing clones. Review this as a separate, deliberate privacy operation before doing it; rotating any credentials or tokens accidentally exposed in history would also be necessary.
