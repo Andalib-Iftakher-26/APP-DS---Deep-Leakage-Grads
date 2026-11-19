@@ -55,6 +55,8 @@ The collected version used in the project contained 285 images across the ten cl
 
 Do not commit raw/, processed/, or metadata.csv without a deliberate review. The metadata file includes source-relative filenames/paths and a GPS-presence flag; raw photographs may contain identifiable people, home interiors, documents, reflections, or location clues even after EXIF is removed. Check the actual image pixels and filenames before publishing a curated sample.
 
+**Historical warning:** previous public commits of this repository contain the original source photos and a metadata CSV. The historical CSV marks all 285 original photos as having GPS metadata. Although these files are not in the current branch snapshot and are now ignored for future commits, deleting them from the latest version does not remove them from Git history. See [docs/EXPERIMENT_STATUS.md](../docs/EXPERIMENT_STATUS.md) before deciding whether to rewrite repository history.
+
 To run the smartphone attack after preprocessing:
 
 ~~~bash
