@@ -316,14 +316,9 @@ def main():
                     runtime_s=res["runtime_s"], diverged=int(res["diverged"]),
                     success=int(finite and m < args.success_mse),
                 )
-                writer.writerow(row)
-                f.flush()
-                rows.append(row)
-                curves.append(res["loss_history"])
+                # Write auxiliary files before recording the trial in CSV. The CSV row
+                # is the resume marker, so it is written only after the trial outputs exist.
                 save_trial_curve(progress_dir, idx, seed, res["loss_history"])
-                completed.add((int(idx), int(seed)))
-                new_trials += 1
-
                 if finite:
                     save_pair(gt, recon, os.path.join(out_dir, "trials", f"idx{idx}_seed{seed}.png"))
                     if idx not in best or m < best[idx][0]:
@@ -332,6 +327,14 @@ def main():
                     save_progress(res["snapshots"], gt,
                                   os.path.join(out_dir, "progress", f"idx{idx}.png"),
                                   os.path.join(out_dir, "progress", f"idx{idx}.gif"))
+
+                writer.writerow(row)
+                f.flush()
+                rows.append(row)
+                curves.append(res["loss_history"])
+                completed.add((int(idx), int(seed)))
+                new_trials += 1
+
                 print(f"[{len(completed)}/{total_trials}] idx {idx:>5} ({row['class_name']}) seed {seed}: "
                       f"MSE {m:.4f}  SSIM {row['ssim']:.3f}  label {'OK' if row['label_correct'] else 'X'}  "
                       f"{res['runtime_s']:.1f}s", flush=True)
