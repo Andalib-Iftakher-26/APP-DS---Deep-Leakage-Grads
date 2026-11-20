@@ -305,7 +305,7 @@ def main():
                     print(f"[{n}/{len(indices)}] idx {idx} seed {seed}: already complete, skipping", flush=True)
                     continue
                 res = run_dlg(net, gt, label, info["classes"], args.iters, seed, device=device,
-                              model_seed=args.model_seed, lbfgs_kwargs=lbfgs_kwargs)
+                              model_seed=args.model_seed, lbfgs_kwargs=lbfgs_kwargs, verbose=True)
                 recon = res["recon"]
                 finite = torch.isfinite(recon).all().item()
                 m = mse(gt, recon) if finite else float("nan")
