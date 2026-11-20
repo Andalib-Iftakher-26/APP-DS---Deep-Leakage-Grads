@@ -318,15 +318,19 @@ def main():
                 )
                 # Write auxiliary files before recording the trial in CSV. The CSV row
                 # is the resume marker, so it is written only after the trial outputs exist.
-                save_trial_curve(progress_dir, idx, seed, res["loss_history"])
+                trial_curve_path = save_trial_curve(progress_dir, idx, seed, res["loss_history"])
+                trial_checkpoint_paths = git_paths + [trial_curve_path]
                 if finite:
-                    save_pair(gt, recon, os.path.join(out_dir, "trials", f"idx{idx}_seed{seed}.png"))
+                    trial_pair_path = os.path.join(out_dir, "trials", f"idx{idx}_seed{seed}.png")
+                    save_pair(gt, recon, trial_pair_path)
+                    trial_checkpoint_paths.append(trial_pair_path)
                     if idx not in best or m < best[idx][0]:
                         best[idx] = (m, gt, recon)
                 if seed == args.seeds[0] and finite:
-                    save_progress(res["snapshots"], gt,
-                                  os.path.join(out_dir, "progress", f"idx{idx}.png"),
-                                  os.path.join(out_dir, "progress", f"idx{idx}.gif"))
+                    progress_png = os.path.join(out_dir, "progress", f"idx{idx}.png")
+                    progress_gif = os.path.join(out_dir, "progress", f"idx{idx}.gif")
+                    save_progress(res["snapshots"], gt, progress_png, progress_gif)
+                    trial_checkpoint_paths.extend([progress_png, progress_gif])
 
                 writer.writerow(row)
                 f.flush()
@@ -341,7 +345,7 @@ def main():
 
                 if args.git_checkpoint_every and new_trials % args.git_checkpoint_every == 0:
                     checkpoint_to_github(
-                        repo_root, args.git_branch, git_paths,
+                        repo_root, args.git_branch, trial_checkpoint_paths,
                         f"checkpoint: {run_name} {len(completed)}/{total_trials} trials"
                     )
 
