@@ -1,0 +1,47 @@
+{
+  "n_trials": 60,
+  "n_images": 20,
+  "n_diverged": 0,
+  "mse": {
+    "mean": 0.05862687943545476,
+    "std": 0.1275852385026665,
+    "median": 2.6434482606418896e-05
+  },
+  "psnr": {
+    "mean": 39.824784987905275,
+    "std": 17.38967003935447,
+    "median": 45.780255631603865
+  },
+  "ssim": {
+    "mean": 0.8326387165735165,
+    "std": 0.35509459732374854,
+    "median": 0.9993053376674652
+  },
+  "runtime_s": {
+    "mean": 28.199640413125355,
+    "std": 67.8097153719244,
+    "median": 19.309393286705017
+  },
+  "label_accuracy": 0.9166666666666666,
+  "success_threshold_mse": 0.01,
+  "success_rate_per_trial": 0.8166666666666667,
+  "success_rate_best_of_seeds": 1.0,
+  "median_iters_to_converge": 60,
+  "n_converged": 49,
+  "lbfgs_tolerances": true,
+  "dataset": "cifar100",
+  "model": "lenet",
+  "init": "official",
+  "iters": 300,
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "image_shape": [
+    3,
+    32,
+    32
+  ],
+  "device": "cpu"
+}
