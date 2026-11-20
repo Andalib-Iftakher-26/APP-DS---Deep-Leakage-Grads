@@ -399,7 +399,8 @@ def build_model(info, model_seed=1234, device="cpu", arch="lenet", init="officia
 
 
 def run_dlg(net, gt_data, gt_label, num_classes, iters=300, dummy_seed=0,
-            snapshot_every=10, device="cpu", model_seed=1234, lbfgs_kwargs=None):
+            snapshot_every=10, device="cpu", model_seed=1234, lbfgs_kwargs=None,
+            verbose=False):
     """
     Run one DLG attack on a single image.
 
@@ -458,6 +459,15 @@ def run_dlg(net, gt_data, gt_label, num_classes, iters=300, dummy_seed=0,
             current = closure().item()
             loss_history.append((it, current))
             snapshots.append((it, dummy_data.detach()[0].cpu().clone()))
+            if verbose:
+                completed = it + 1
+                elapsed = time.time() - start
+                eta = (elapsed / completed) * max(0, iters - completed)
+                print(
+                    f"      optimisation {completed}/{iters} | "
+                    f"gradient loss {current:.6g} | elapsed {elapsed:.1f}s | ETA {eta:.1f}s",
+                    flush=True,
+                )
             if not math.isfinite(current):
                 diverged = True
                 break
