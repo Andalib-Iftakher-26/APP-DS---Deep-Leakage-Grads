@@ -33,6 +33,8 @@ import json
 import math
 import os
 import statistics
+import subprocess
+from pathlib import Path
 
 import torch
 from torchvision import transforms
@@ -111,6 +113,71 @@ def summarise(rows, success_mse):
     )
 
 
+def load_saved_rows(csv_path):
+    """Load completed CSV trials so a timed-out run can resume safely."""
+    rows = []
+    if not os.path.exists(csv_path):
+        return rows
+    int_fields = {"index", "true_label", "seed", "pred_label", "label_correct", "diverged", "success"}
+    float_fields = {"mse", "psnr", "ssim", "final_grad_loss", "runtime_s"}
+    with open(csv_path, newline="") as source:
+        for record in csv.DictReader(source):
+            row = dict(record)
+            for key in int_fields:
+                row[key] = int(row[key])
+            for key in float_fields:
+                row[key] = float(row[key])
+            row["iters_to_converge"] = int(row["iters_to_converge"]) if row["iters_to_converge"].strip() else None
+            rows.append(row)
+    return rows
+
+
+def checkpoint_to_github(repo_root, branch, paths, message):
+    """Commit only the requested result files and push them to the chosen branch."""
+    def git(*args, check=True):
+        return subprocess.run(
+            ["git", *args], cwd=repo_root, check=check, text=True,
+            stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+        )
+
+    current = git("branch", "--show-current").stdout.strip()
+    if current != branch:
+        raise RuntimeError(
+            f"Git checkpoint expected branch '{branch}', but Codespaces is on '{current}'. "
+            "Switch to the correct branch before running."
+        )
+    staged = git("diff", "--cached", "--quiet", check=False)
+    if staged.returncode != 0:
+        raise RuntimeError(
+            "There are already staged Git changes. Commit or unstage them before starting; "
+            "the runner will not include unrelated files in its commits."
+        )
+
+    relative_paths = [str(Path(path).resolve().relative_to(repo_root)) for path in paths]
+    git("add", "-f", "--", *relative_paths)
+    changed = git("diff", "--cached", "--quiet", check=False)
+    if changed.returncode != 0:
+        git("commit", "-m", message)
+
+    pushed = git("push", "origin", branch, check=False)
+    if pushed.returncode != 0:
+        raise RuntimeError(
+            f"Could not push the experiment checkpoint to origin/{branch}. "
+            f"The local commit is preserved. Run 'git pull --rebase origin {branch}' "
+            f"and then restart the same command. Git output:\\n{pushed.stdout}"
+        )
+    print(f"[GitHub checkpoint] pushed {', '.join(relative_paths)}", flush=True)
+
+
+def save_trial_curve(progress_dir, index, seed, loss_history):
+    """Persist loss history per trial so full curves can be rebuilt after a restart."""
+    os.makedirs(progress_dir, exist_ok=True)
+    path = os.path.join(progress_dir, f"loss_idx{index}_seed{seed}.json")
+    with open(path, "w") as target:
+        json.dump(loss_history, target)
+    return path
+
+
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--dataset", required=True,
@@ -142,7 +209,12 @@ def main():
                    help="gradient-matching loss below which the attack is 'converged'")
     p.add_argument("--out", default="results")
     p.add_argument("--tag", default="", help="optional suffix for the output folder")
+    p.add_argument("--resume", action="store_true", help="resume completed trials from the existing results.csv")
+    p.add_argument("--git-checkpoint-every", type=int, default=0, help="commit and push every N completed trials; 0 disables Git checkpoints")
+    p.add_argument("--git-branch", default="master", help="Git branch receiving result checkpoints")
     args = p.parse_args()
+    if args.git_checkpoint_every < 0:
+        p.error("--git-checkpoint-every must be zero or greater")
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
     dst, info = load_dataset(args.dataset, args.data_root, args.smartphone_root, args.image_size)
@@ -171,14 +243,63 @@ def main():
               "mse", "psnr", "ssim", "final_grad_loss", "iters_to_converge", "runtime_s",
               "diverged", "success"]
     csv_path = os.path.join(out_dir, "results.csv")
-    rows, curves, best = [], [], {}
+    config_path = os.path.join(out_dir, "run_config.json")
+    progress_dir = os.path.join(out_dir, "progress")
+    run_config = dict(
+        dataset=args.dataset, model=args.model, init=args.init,
+        resnet_strides=args.resnet_strides, resnet_head=args.resnet_head,
+        resnet_bn=args.resnet_bn, resnet_skip=args.resnet_skip,
+        n_images=args.n_images, indices=args.indices, seeds=args.seeds,
+        iters=args.iters, model_seed=args.model_seed, image_size=args.image_size,
+        smartphone_root=args.smartphone_root, data_root=args.data_root,
+        success_mse=args.success_mse, converge_threshold=args.converge_threshold,
+        tag=args.tag, output=args.out,
+    )
+    if args.resume and os.path.exists(csv_path):
+        if not os.path.exists(config_path):
+            raise RuntimeError(
+                f"Cannot safely resume {out_dir}: run_config.json is missing. "
+                "Use a new --tag or restore the matching configuration file."
+            )
+        with open(config_path) as config_file:
+            previous_config = json.load(config_file)
+        if previous_config != run_config:
+            raise RuntimeError(
+                f"Resume configuration does not match {config_path}. "
+                "Do not mix different settings; use the original settings or choose a new --tag."
+            )
+        rows = load_saved_rows(csv_path)
+        print(f"Resuming {len(rows)} saved trials from {csv_path}", flush=True)
+    else:
+        rows = []
+        with open(config_path, "w") as config_file:
+            json.dump(run_config, config_file, indent=2)
 
-    with open(csv_path, "w", newline="") as f:
+    completed = {(int(row["index"]), int(row["seed"])) for row in rows}
+    total_trials = len(indices) * len(args.seeds)
+    new_trials = 0
+    curves, best = [], {}
+    repo_root = Path(__file__).resolve().parent
+    git_paths = [csv_path, config_path]
+
+    # A push here also recovers a local commit left behind by an interrupted push.
+    if args.git_checkpoint_every:
+        checkpoint_to_github(
+            repo_root, args.git_branch, git_paths,
+            f"checkpoint: {run_name} resume existing results"
+        )
+
+    file_mode = "a" if args.resume and os.path.exists(csv_path) else "w"
+    with open(csv_path, file_mode, newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fields)
-        writer.writeheader()
+        if file_mode == "w":
+            writer.writeheader()
         for n, idx in enumerate(indices, 1):
             gt, label = get_image_tensor(dst, idx, info)
             for seed in args.seeds:
+                if (int(idx), int(seed)) in completed:
+                    print(f"[{n}/{len(indices)}] idx {idx} seed {seed}: already complete, skipping", flush=True)
+                    continue
                 res = run_dlg(net, gt, label, info["classes"], args.iters, seed, device=device,
                               model_seed=args.model_seed, lbfgs_kwargs=lbfgs_kwargs)
                 recon = res["recon"]
@@ -199,6 +320,9 @@ def main():
                 f.flush()
                 rows.append(row)
                 curves.append(res["loss_history"])
+                save_trial_curve(progress_dir, idx, seed, res["loss_history"])
+                completed.add((int(idx), int(seed)))
+                new_trials += 1
 
                 if finite:
                     save_pair(gt, recon, os.path.join(out_dir, "trials", f"idx{idx}_seed{seed}.png"))
@@ -208,9 +332,23 @@ def main():
                     save_progress(res["snapshots"], gt,
                                   os.path.join(out_dir, "progress", f"idx{idx}.png"),
                                   os.path.join(out_dir, "progress", f"idx{idx}.gif"))
-                print(f"[{n}/{len(indices)}] idx {idx:>5} ({row['class_name']}) seed {seed}: "
+                print(f"[{len(completed)}/{total_trials}] idx {idx:>5} ({row['class_name']}) seed {seed}: "
                       f"MSE {m:.4f}  SSIM {row['ssim']:.3f}  label {'OK' if row['label_correct'] else 'X'}  "
-                      f"{res['runtime_s']:.1f}s")
+                      f"{res['runtime_s']:.1f}s", flush=True)
+
+                if args.git_checkpoint_every and new_trials % args.git_checkpoint_every == 0:
+                    checkpoint_to_github(
+                        repo_root, args.git_branch, git_paths,
+                        f"checkpoint: {run_name} {len(completed)}/{total_trials} trials"
+                    )
+
+    # Rebuild every curve, including trials completed before a Codespace restart.
+    curves = []
+    for idx, seed in sorted(completed):
+        curve_path = os.path.join(progress_dir, f"loss_idx{idx}_seed{seed}.json")
+        if os.path.exists(curve_path):
+            with open(curve_path) as curve_file:
+                curves.append(json.load(curve_file))
 
     summary = summarise(rows, args.success_mse)
     if args.model != "lenet":
@@ -222,15 +360,28 @@ def main():
     with open(os.path.join(out_dir, "summary.json"), "w") as f:
         json.dump(summary, f, indent=2)
 
-    # Showcase: original row vs best-of-seeds reconstruction row (up to 10 images)
-    show = list(best.items())[:10]
+    # Rebuild showcase images from every saved trial, including earlier sessions.
+    from PIL import Image
+    best_rows = {}
+    for row in rows:
+        if not row["diverged"] and math.isfinite(row["mse"]):
+            if row["index"] not in best_rows or row["mse"] < best_rows[row["index"]]["mse"]:
+                best_rows[row["index"]] = row
+    show = []
+    for idx, row in sorted(best_rows.items())[:10]:
+        pair_path = os.path.join(out_dir, "trials", f"idx{idx}_seed{row['seed']}.png")
+        if os.path.exists(pair_path):
+            with Image.open(pair_path) as pair:
+                split = (pair.width - 8) // 2
+                original = pair.crop((0, 0, split, pair.height))
+                reconstruction = pair.crop((split + 8, 0, pair.width, pair.height))
+                show.append((idx, row["mse"], original.copy(), reconstruction.copy()))
     if show:
         fig, axes = plt.subplots(2, len(show), figsize=(1.6 * len(show), 3.6), squeeze=False)
-        cmap = "gray" if info["channels"] == 1 else None
-        for j, (idx, (m, gt, recon)) in enumerate(show):
-            axes[0, j].imshow(to_pil(gt), cmap=cmap)
+        for j, (idx, m, original, reconstruction) in enumerate(show):
+            axes[0, j].imshow(original)
             axes[0, j].set_title(f"idx {idx}", fontsize=8)
-            axes[1, j].imshow(to_pil(recon.clamp(0, 1)), cmap=cmap)
+            axes[1, j].imshow(reconstruction)
             axes[1, j].set_title(f"MSE {m:.4f}", fontsize=8)
             axes[0, j].axis("off")
             axes[1, j].axis("off")
@@ -240,23 +391,30 @@ def main():
         plt.savefig(os.path.join(out_dir, "showcase.png"), dpi=150)
         plt.close(fig)
 
-    # Loss curves
-    fig, ax = plt.subplots(figsize=(6, 4))
-    for c in curves:
-        its = [it for it, l in c if math.isfinite(l) and l > 0]
-        ls = [l for it, l in c if math.isfinite(l) and l > 0]
-        ax.plot(its, ls, alpha=0.4, linewidth=1)
-    ax.set_yscale("log")
-    ax.set_xlabel("iteration")
-    ax.set_ylabel("gradient-matching loss")
-    ax.set_title(f"DLG on {args.dataset} ({len(curves)} trials)")
-    plt.tight_layout()
-    plt.savefig(os.path.join(out_dir, "loss_curves.png"), dpi=150)
-    plt.close(fig)
+    # Loss curves are rebuilt from per-trial JSON histories.
+    if curves:
+        fig, ax = plt.subplots(figsize=(6, 4))
+        for curve in curves:
+            its = [int(it) for it, loss in curve if math.isfinite(float(loss)) and float(loss) > 0]
+            losses = [float(loss) for it, loss in curve if math.isfinite(float(loss)) and float(loss) > 0]
+            ax.plot(its, losses, alpha=0.4, linewidth=1)
+        ax.set_yscale("log")
+        ax.set_xlabel("iteration")
+        ax.set_ylabel("gradient-matching loss")
+        ax.set_title(f"DLG on {args.dataset} ({len(curves)} trials)")
+        plt.tight_layout()
+        plt.savefig(os.path.join(out_dir, "loss_curves.png"), dpi=150)
+        plt.close(fig)
 
     print("\n=== Summary ===")
     print(json.dumps(summary, indent=2))
     print(f"\nSaved to {out_dir}/")
+    if args.git_checkpoint_every:
+        checkpoint_to_github(
+            repo_root, args.git_branch,
+            [csv_path, config_path, os.path.join(out_dir, "summary.json")],
+            f"results: complete {run_name} ({len(rows)} trials)"
+        )
 
 
 if __name__ == "__main__":
