@@ -1,0 +1,25 @@
+{
+  "dataset": "smartphone",
+  "model": "lenet",
+  "init": "official",
+  "resnet_strides": false,
+  "resnet_head": "gap",
+  "resnet_bn": false,
+  "resnet_skip": "post",
+  "n_images": 12,
+  "indices": null,
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "iters": 300,
+  "model_seed": 1234,
+  "image_size": null,
+  "smartphone_root": "smartphone/processed/32",
+  "data_root": "~/.torch",
+  "success_mse": 0.01,
+  "converge_threshold": 0.001,
+  "tag": "codespace_resume_smartphone32",
+  "output": "results"
+}
