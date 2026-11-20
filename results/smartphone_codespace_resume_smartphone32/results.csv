@@ -1,0 +1,2 @@
+dataset,model,index,true_label,class_name,seed,pred_label,label_correct,mse,psnr,ssim,final_grad_loss,iters_to_converge,runtime_s,diverged,success
+smartphone,lenet,0,0,bag,0,0,1,0.0007235009106807411,31.405609178920457,0.9828376770019531,2.2423914742830675e-06,80,23.792151927947998,0,1
