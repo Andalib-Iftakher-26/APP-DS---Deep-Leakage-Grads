@@ -283,9 +283,13 @@ def main():
     git_paths = [csv_path, config_path]
 
     # A push here also recovers a local commit left behind by an interrupted push.
+    # On a brand-new run results.csv does not exist until the output writer opens it.
     if args.git_checkpoint_every:
+        initial_paths = [config_path]
+        if os.path.exists(csv_path):
+            initial_paths.append(csv_path)
         checkpoint_to_github(
-            repo_root, args.git_branch, git_paths,
+            repo_root, args.git_branch, initial_paths,
             f"checkpoint: {run_name} resume existing results"
         )
 
