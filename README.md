@@ -68,6 +68,28 @@ python run_experiments.py \
 
 This is only a pipeline check. Two iterations are **not** a meaningful reproduction result.
 
+### Run the three resumable assessment experiments
+
+In GitHub Codespaces, first update the checkout to the latest `master`:
+
+~~~bash
+git pull --rebase origin master
+~~~
+
+Then run this single command:
+
+~~~bash
+python scripts/run_three_tests.py
+~~~
+
+It runs the CIFAR-100 baseline and the smartphone dataset at 32×32 and 64×64. Each run uses LeNet, the official initialisation, seeds 0, 1 and 2, and 300 outer iterations. The expected workload is 60 CIFAR-100 trials plus 36 smartphone trials at each resolution (132 trials total).
+
+**Resume after a Codespaces timeout:** run the same command again. Completed `(image index, seed)` trials are read from their existing CSV files and skipped. The run configuration is checked before resuming so different settings are not accidentally mixed.
+
+**GitHub checkpoints:** each completed trial is committed and pushed to `origin/master`. The commits include the updated CSV, run configuration, per-trial loss history, and reconstruction/progress images when available. A final summary JSON is committed when each dataset run finishes. This means a new Codespace can resume from the last pushed trial.
+
+The script must be run from a Git checkout on the `master` branch with GitHub push authentication configured. It deliberately stages only its own `results/<run-name>/` files; unrelated files are not added to its commits. Do not change the run tags or settings when resuming. To start a separate fresh set of runs, use a different tag set in a copied command or remove the corresponding result folders deliberately.
+
 ## Running experiments
 
 ### Single-image DLG
